@@ -7,8 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
+
 @SpringBootApplication
-@Controller
+@RestController
 public class ProjetJeeApplication {
 
     public static void main(String[] args) {
@@ -16,8 +20,18 @@ public class ProjetJeeApplication {
     }
 
     @GetMapping("/test")
-    public String test(){
-        return "Test";
+    public String test() {
+        jdbcConfig conf = new jdbcConfig();
+        DataSource dataSource = conf.mysqlDataSource();
+        try {
+            Connection conn = dataSource.getConnection();
+            if(conn.isValid(500)) return "success";
+
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+        return "failure";
     }
 
     @GetMapping("/other")
