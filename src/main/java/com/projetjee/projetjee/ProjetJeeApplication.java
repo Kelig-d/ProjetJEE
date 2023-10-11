@@ -19,24 +19,5 @@ public class ProjetJeeApplication {
         SpringApplication.run(ProjetJeeApplication.class, args);
     }
 
-    @GetMapping("/test")
-    public String test() {
-        jdbcConfig conf = new jdbcConfig();
-        DataSource dataSource = conf.mysqlDataSource();
-        try {
-            Connection conn = dataSource.getConnection();
-            if(conn.isValid(500)) return "success";
-
-        }
-        catch (Exception e){
-            System.out.println(e);
-        }
-        return "failure";
-    }
-
-    @GetMapping("/other")
-    public String other(){
-        return "other";
-    }
 
 }

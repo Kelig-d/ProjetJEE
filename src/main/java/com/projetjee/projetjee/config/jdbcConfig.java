@@ -1,4 +1,4 @@
-package com.projetjee.projetjee;
+package com.projetjee.projetjee.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
