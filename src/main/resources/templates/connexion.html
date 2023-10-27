@@ -40,7 +40,7 @@
     <form action="#" th:action="@{/login}" th:object="${logStat}" method="post" class="text-center">
         <p class="connectionp">Identifiant:</p>
         <label>
-            <input type="text" th:field="*{id}">
+            <input  id ="identity" type="text" th:field="*{id}" />
         </label>
 
         <p class="connectionp">Mot de passe:</p>
@@ -51,6 +51,20 @@
             <input class="connectionp" type="submit" value="Connexion" />
         </p>
     </form>
+    <p id="resul"></p>
+
+    <script>
+        function domReady(f) {
+            const temps = document.getElementById("identity").textContent;
+            console.log(temps);
+            if( temps !== ""){
+                document.getElementById("resul").textContent = "Error";
+            }
+        }
+       // ifs
+
+    </script>
+
 </section>
 </body>
 </html>
