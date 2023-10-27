@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion des sessions</title>
+
+
+  <!-- Favicons -->
+  <link th:href="@{/assets/img/favicon.png}" rel="icon">
+  <link th:href="@{assets/img/apple-touch-icon.png}" rel="apple-touch-icon">
+
+
+  <!-- Vendor CSS Files -->
+  <link th:href="@{assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link th:href="@{assets/css/style.css}" rel="stylesheet">
+
+
+</head>
+<body>
+
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top ">
+  <div class="container d-flex align-items-center">
+
+    <h1 class="logo me-auto"><a href="index.html">Jogenda</a></h1>
+
+    <nav id="navbar" class="navbar">
+      <ul>
+        <li><a class="nav-link" href="/">Home</a></li>
+        <li><a class="nav-link active" href="/session">Sessions</a></li>
+        <li class="dropdown"><a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
+          <ul>
+            <li><a href="#">Drop Down 1</a></li>
+            <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
+              <ul>
+                <li><a href="#">Deep Drop Down 1</a></li>
+                <li><a href="#">Deep Drop Down 2</a></li>
+                <li><a href="#">Deep Drop Down 3</a></li>
+                <li><a href="#">Deep Drop Down 4</a></li>
+                <li><a href="#">Deep Drop Down 5</a></li>
+              </ul>
+            </li>
+            <li><a href="#">Drop Down 2</a></li>
+            <li><a href="#">Drop Down 3</a></li>
+            <li><a href="#">Drop Down 4</a></li>
+          </ul>
+        </li>
+        <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+        <li><a class="getstarted scrollto" href="#about">Get Started</a></li>
+      </ul>
+      <i class="bi bi-list mobile-nav-toggle"></i>
+    </nav><!-- .navbar -->
+
+  </div>
+</header><!-- End Header -->
+<section id="hero" class="d-flex align-items-center">
+  <button type="button" id="createSessionButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createSessionModal">
+    Créer une session
+  </button>
+</section>
+<!-- End Hero -->
+
+<main id="main">
+
+</main><!-- End #main -->
+
+
+<div class="modal" tabindex="-1" id="createSessionModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  const myModal = document.getElementById('createSessionModal')
+  const myInput = document.getElementById('createSessionButton')
+
+  myModal.addEventListener('shown.bs.modal', async () => {
+    myInput.focus();
+    var test = await fetch('/createSessionData?data=TypeSession')
+              .then((response) => {
+                return response.text()
+              })
+    console.log(test);
+  })
+
+</script>
+<!-- Vendor JS Files -->
+<script src="assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Template Main JS File -->
+<script src="assets/js/main.js"></script>
+
+</body>
+</html>
