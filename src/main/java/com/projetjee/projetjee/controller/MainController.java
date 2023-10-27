@@ -14,7 +14,7 @@ import java.util.Map;
 @RestController
 public class MainController {
     @GetMapping("/test")
-    public Map<String, String >[] test() {
+    public Map<String, String > test() {
         jdbcConfig conf = new jdbcConfig();
         DataSource dataSource = conf.mysqlDataSource();
         try {
@@ -26,9 +26,8 @@ public class MainController {
         }
         catch (Exception e){
             System.out.println(e);
-            Map<String, String>[] ret = new Map[1];
-            ret[0] = new HashMap<String, String>();
-            ret[0].put("result","fail");
+            Map<String, String> ret = new HashMap<>();
+            ret.put("result","fail");
             return ret;
         }
     }
