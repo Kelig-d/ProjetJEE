@@ -3,6 +3,7 @@ package com.projetjee.projetjee.controller;
 
 import com.projetjee.projetjee.config.jdbcConfig;
 import com.projetjee.projetjee.utils.jdbcUtils;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +28,15 @@ public class ConnexionController {
         return "connexion";
     }
 
+    @Bean
+    public CookieSerializer cookieSerializer() {
+        DefaultCookieSerializer serializer = new DefaultCookieSerializer();
+        serializer.setCookieName("JSESSIONID");
+        serializer.setCookiePath("/");
+        serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$");
+        return serializer;
+    }
+
     @PostMapping("/login")
     public String greetingSubmit(@ModelAttribute Connexion connexion, Model model) {
         jdbcConfig conf = new jdbcConfig();
@@ -42,6 +52,12 @@ public class ConnexionController {
             for (Map<String, String> stringStringMap : User) {
                 System.out.println(stringStringMap);
                 if(Objects.equals(stringStringMap.get("login"), connexion.getId()) && Objects.equals(stringStringMap.get("password"), connexion.getMdp())){
+                  /*  UserDetails user = User.withDefaultPasswordEncoder()
+                            .username("user")
+                            .password("password")
+                            .roles("user")
+                            .build();
+                    System.out.println(user.getPassword());*/
                     return "result";
                 }
             }
