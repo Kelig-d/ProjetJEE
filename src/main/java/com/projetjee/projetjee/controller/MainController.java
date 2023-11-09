@@ -19,7 +19,7 @@ public class MainController {
         DataSource dataSource = conf.mysqlDataSource();
         try {
             Connection conn = dataSource.getConnection();
-            ResultSet rs = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM test");
+            ResultSet rs = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Discipline");
             return jdbcUtils.resultToArray(rs);
 
 
