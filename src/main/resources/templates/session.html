@@ -71,27 +71,15 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Créer une session</h5>
+        <h5 class="modal-title">Modal title</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <div class ="form-part">
-          <form>
-            Discipline :
-            <select class="form-select" id="selectDiscipline">
-              <option>En chargement des disciplines</option>
-          </select>
-            <div id="selEpreuveBox" hidden>
-              Epreuve :
-              <select class="form-select" id="selectEpreuve">
-              </select>
-            </div>
-          </form>
-        </div>
+        <p>Modal body text goes here.</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-        <button type="button" class="btn btn-primary" id="next" disabled>Suivant</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
@@ -99,43 +87,15 @@
 <script>
   const myModal = document.getElementById('createSessionModal')
   const myInput = document.getElementById('createSessionButton')
-  const selDis = document.getElementById("selectDiscipline");
-  const selEp = document.getElementById("selectEpreuve");
-  const selEpBox = document.getElementById("selEpreuveBox");
-  const selBut = document.getElementById("next");
+
   myModal.addEventListener('shown.bs.modal', async () => {
     myInput.focus();
-      var disciplines = await fetch('/createSessionDisciplines')
+    var test = await fetch('/createSessionData?data=TypeSession')
               .then((response) => {
-                selDis.innerHTML = "<option>Choisissez une discipline</option>";
-                return response.json()
+                return response.text()
               })
-
-      disciplines.forEach((dis)=>{
-        selDis.innerHTML += "<option>"+dis+"</option>";
-      })
-    })
-  selDis.addEventListener('change', async ()=>{
-    selEp.innerHTML = "<option>Choisissez une épreuve</option>";
-    var epreuves = await fetch('/createSessionEpreuves/'+selDis.value)
-            .then((response)=>{
-              return response.json()
-            })
-    epreuves.forEach((ep)=>{
-      selEp.innerHTML += "<option>"+ep+"</option>";
-    })
-    selEpBox.hidden = false
-    selEp.addEventListener('change', async()=>{
-      selBut.disabled = false
-
-    })
-    selBut.addEventListener('click', ()=>{
-
-    })
-
+    console.log(test);
   })
-
-
 
 </script>
 <!-- Vendor JS Files -->
