@@ -18,11 +18,11 @@ public class Session {
     @Id
     private String code;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_site", referencedColumnName = "id_site")
     private Site site;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_epreuve", referencedColumnName = "id_epreuve")
     private Epreuve epreuve;
 
@@ -31,7 +31,7 @@ public class Session {
     private Time heure_fin;
     private String description;
 
-    @OneToOne
-    @JoinColumn(name="type_session", referencedColumnName = "type_session")
+    @ManyToOne
+    @JoinColumn(name="type_session", referencedColumnName = "nom")
     private TypeSession type_session;
 }

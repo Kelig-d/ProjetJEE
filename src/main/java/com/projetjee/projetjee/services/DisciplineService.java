@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface DisciplineService {
 
-    List<Discipline> getAll();
+    List<String> getAllNames();
 }
