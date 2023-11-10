@@ -13,11 +13,18 @@ import lombok.NoArgsConstructor;
 public class Epreuve {
 
     @Id
-    private Long id;
+    private Long id_epreuve;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_discipline", referencedColumnName = "id_discipline")
     private Discipline discipline;
 
     private String nom;
+
+    public String getNom(){
+        return this.nom;
+    }
+    public interface Nom{
+        String getNom();
+    }
 }

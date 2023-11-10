@@ -1,7 +1,7 @@
 package com.projetjee.projetjee.controller;
 
 import com.projetjee.projetjee.services.DisciplineService;
-import com.projetjee.projetjee.entity.Discipline;
+import com.projetjee.projetjee.entities.Discipline;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
