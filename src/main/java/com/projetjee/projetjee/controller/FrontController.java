@@ -11,4 +11,9 @@ public class FrontController {
     public String homePage(){
         return "index";
     }
+
+    @GetMapping("/session")
+    public String sessionPage(){
+        return "session";
+    }
 }

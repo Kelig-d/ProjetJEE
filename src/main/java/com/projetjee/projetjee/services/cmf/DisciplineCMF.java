@@ -1,0 +1,18 @@
+package com.projetjee.projetjee.services.cmf;
+
+import com.projetjee.projetjee.entities.Discipline;
+import com.projetjee.projetjee.repository.DisciplineRepository;
+import com.projetjee.projetjee.services.DisciplineService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+@Service
+public class DisciplineCMF implements DisciplineService{
+    @Autowired
+    private DisciplineRepository disciplineRepository;
+    @Override
+    public List<Discipline> getAll() {
+        return disciplineRepository.findAll();
+    }
+}
