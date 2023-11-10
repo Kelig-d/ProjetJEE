@@ -13,10 +13,10 @@ import lombok.NoArgsConstructor;
 public class Discipline {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id_discipline;
     private String nom;
     private boolean paralympique;
-
 
     public Long getId_discipline() {
         return id_discipline;
@@ -34,12 +34,16 @@ public class Discipline {
         this.nom = nom;
     }
 
-    public boolean isParalympique() {
+    public Boolean getParalympique() {
         return paralympique;
     }
 
-    public void setParalympique(boolean paralympique) {
+    public void setParalympique(Boolean paralympique) {
         this.paralympique = paralympique;
     }
 
+    @Override
+    public String toString() {
+        return "Discipline [id=" + id_discipline + ", name=" + nom + ", flags=" + paralympique + "]";
+    }
 }
