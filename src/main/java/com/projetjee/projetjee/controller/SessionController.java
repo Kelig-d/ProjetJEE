@@ -7,6 +7,7 @@ import com.projetjee.projetjee.entities.Epreuve;
 import com.projetjee.projetjee.entities.Site;
 import com.projetjee.projetjee.services.DisciplineService;
 import com.projetjee.projetjee.services.EpreuveService;
+import com.projetjee.projetjee.services.SessionService;
 import com.projetjee.projetjee.services.SiteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,8 @@ public class SessionController {
     private EpreuveService epreuveService;
     @Autowired
     private SiteService siteService;
+    @Autowired
+    private SessionService sessionService;
 
     @ResponseBody
     @GetMapping("/createSessionDisciplines")
@@ -53,7 +56,16 @@ public class SessionController {
     public ResponseEntity<JSONObject> sendCreateSessionSites() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         JSONObject response = new JSONObject();
-        response.put("sites", mapper.writeValueAsString(siteService.getAllNames()));
+        response.put("sites", mapper.writeValueAsString(siteService.getAllGroupByCategorie()));
+        return ResponseEntity.ok(response);
+    }
+
+    @ResponseBody
+    @GetMapping("/getDates/{site}")
+    public ResponseEntity<JSONObject> sendCreateSessionDate(@PathVariable("site") String site) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        JSONObject response = new JSONObject();
+        response.put("dates",mapper.writeValueAsString(sessionService.getDatesBySite(site)));
         return ResponseEntity.ok(response);
     }
 }

@@ -21,12 +21,13 @@ public class Site {
 
     @ManyToOne
     @JoinColumn(name = "Categorie", referencedColumnName = "nom")
-    @Getter
+
     private Categorie categorie;
+
 
     public interface SiteCategory {
         String getNom();
-        String getCategorie();
+        String getCategorieNom();
     }
 
 }

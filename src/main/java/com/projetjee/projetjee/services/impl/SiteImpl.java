@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class SiteImpl implements SiteService {
@@ -14,8 +16,8 @@ public class SiteImpl implements SiteService {
     private SiteRepository siteRepository;
 
     @Override
-    public List<Site.SiteCategory> getAllNames() {
-        return siteRepository.findAllProjectedBy();
+    public Map<String,List<String>> getAllGroupByCategorie() {
+        return siteRepository.findAllProjectedBy().stream().collect(Collectors.groupingBy(Site.SiteCategory::getCategorieNom, Collectors.mapping(Site.SiteCategory::getNom, Collectors.toList())));
 
     }
 

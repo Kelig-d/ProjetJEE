@@ -16,6 +16,18 @@
   <!-- Template Main CSS File -->
   <link th:href="@{assets/css/style.css}" rel="stylesheet">
 
+  <link href=
+                'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css'
+        rel='stylesheet'>
+
+  <script src=
+                  "https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" >
+  </script>
+
+  <script src=
+                  "https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" >
+  </script>
+
 
 </head>
 <body>
@@ -75,8 +87,8 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+        <form>
         <div class ="form-part">
-          <form>
             Discipline :
             <select class="form-select" id="selectDiscipline">
               <option value='' disabled selected hidden>En chargement des disciplines</option>
@@ -86,17 +98,25 @@
               <select class="form-select" id="selectEpreuve">
               </select>
             </div>
-          </form>
         </div>
+
         <div class ="form-part" hidden>
-          <form>
            Catégorie de site :
             <select class="form-select" id="selCat">
               <option value='' disabled selected hidden>En chargement des catégories</option>
             </select>
-
-          </form>
+            <div id="selSiteBox" hidden>
+              Site :
+              <select class="form-select" id="selSite">
+                <option value='' disabled selected hidden>En chargement des sites</option>
+              </select>
+            </div>
         </div>
+
+        <div class ="form-part" hidden>
+            <input id="startDate" />
+        </div>
+        </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Annuler</button>
@@ -112,7 +132,9 @@
   const selDis = document.getElementById("selectDiscipline");
   const selEp = document.getElementById("selectEpreuve");
   const selCat = document.getElementById("selCat");
+  const selSite = document.getElementById("selSite");
   const selEpBox = document.getElementById("selEpreuveBox");
+  const selSiteBox = document.getElementById("selSiteBox");
   const nextBut = document.getElementById("next");
   const retBut = document.getElementById("ret");
   const formParts = Array.prototype.slice.call(document.getElementsByClassName("form-part"));
@@ -134,6 +156,7 @@
   })
   selDis.addEventListener('change', async ()=> {
     selEp.innerHTML = "<option value='' disabled selected hidden>Choisissez une épreuve</option>";
+    nextBut.disabled = true;
     dis = selDis.value;
     var response = await fetch('/createSessionEpreuves/' + dis)
             .then((res) => {
@@ -149,6 +172,9 @@
     })
   })
 
+
+    var sites;
+  var dates;
     nextBut.addEventListener('click', async ()=>{
       activeForm++;
       retBut.hidden = false;
@@ -160,16 +186,31 @@
       if(activeForm == 1){
         var response = await fetch('/createSessionSites')
                 .then((res) => {
-                  selCat.innerHTML = "<option value='' disabled selected hidden>Choisissez un site</option>";
+                  selCat.innerHTML = "<option value='' disabled selected hidden>Choisissez une catégorie</option>";
                   return res.json()
                 })
-        console.log(JSON.parse(response.sites));
-        JSON.parse(response.sites).forEach((site)=>{
-            selCat.innerHTML += "<option>"+site.categorie+"</option>";
+        sites = JSON.parse(response.sites)
+        Object.keys(sites).forEach((key)=>{
+            selCat.innerHTML += "<option>"+key+"</option>";
             })
 
           }
+      if(activeForm == 2){
+        var response = await fetch('/getDates/'+selSite.value)
+                .then((res) => {
+                  return res.json()
+                })
+        dates = JSON.parse(response.dates)
+      }
     })
+
+  selCat.addEventListener('change', async () => {
+    selSite.innerHTML = "<option value='' disabled selected hidden>Choisissez un site</option>";
+    selSiteBox.hidden = false;
+    sites[selCat.value].forEach((site) => {
+      selSite.innerHTML += "<option>" + site + "</option>";
+    })
+  })
 
   retBut.addEventListener('click', ()=> {
     activeForm--;
@@ -182,6 +223,29 @@
       retBut.hidden = true;
     }
   })
+
+  function WarnDays(date) {
+      var fDate = $.datepicker.formatDate('dd-mm-yy', date);
+      var res = [true,''];
+      $.each(dates, function (i, e) {
+        let dateString = new Date(e.date);
+        if(fDate === dateString.getDate()+"-"+(dateString.getMonth()+1)+"-"+dateString.getFullYear()){
+          res = [true, 'ui-state-highlight', 'Une session est déjà présente sur cette date'];
+        }
+      });
+    return res;
+
+  }
+
+  $("#startDate").datepicker({
+    uiLibrary: 'bootstrap5',
+    dateFormat: 'dd-mm-yy',
+    minDate: 0,
+    beforeShowDay: WarnDays,
+    onselect:(()=>{
+
+    })
+  });
 
 
 </script>

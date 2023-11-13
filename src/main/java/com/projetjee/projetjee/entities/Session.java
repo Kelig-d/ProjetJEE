@@ -27,11 +27,17 @@ public class Session {
     private Epreuve epreuve;
 
     private Date date;
-    private Time heure_debut;
-    private Time heure_fin;
+    private Time heureDebut;
+    private Time heureFin;
     private String description;
 
     @ManyToOne
     @JoinColumn(name="type_session", referencedColumnName = "nom")
     private TypeSession type_session;
+
+    public interface dates {
+        Date getDate();
+        Time getHeureDebut();
+        Time getHeureFin();
+    }
 }
