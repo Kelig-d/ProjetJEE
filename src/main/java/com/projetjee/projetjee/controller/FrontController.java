@@ -27,8 +27,13 @@ public class FrontController {
         return "index";
     }
 
-    @GetMapping("/site")
+    @GetMapping("/session")
     public String sessionPage(){
+        return "session";
+    }
+
+    @GetMapping("/site")
+    public String sitePage(){
         return "site";
     }
 
@@ -98,6 +103,11 @@ public class FrontController {
     @GetMapping("/test1")
     public String test(){
         return "test";
+    }
+
+    @GetMapping("/discipline")
+    public String disciplinePage(){
+        return "discipline";
     }
 
 }
