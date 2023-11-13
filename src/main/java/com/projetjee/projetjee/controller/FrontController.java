@@ -27,9 +27,9 @@ public class FrontController {
         return "index";
     }
 
-    @GetMapping("/session")
+    @GetMapping("/site")
     public String sessionPage(){
-        return "session";
+        return "site";
     }
 
     @Autowired
