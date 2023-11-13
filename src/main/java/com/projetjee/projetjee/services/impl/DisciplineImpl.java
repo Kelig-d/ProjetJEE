@@ -1,4 +1,4 @@
-package com.projetjee.projetjee.services.cmf;
+package com.projetjee.projetjee.services.impl;
 
 import com.projetjee.projetjee.entities.Discipline;
 import com.projetjee.projetjee.repository.DisciplineRepository;
@@ -8,11 +8,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class DisciplineCMF implements DisciplineService{
-    @Autowired
-    private DisciplineRepository disciplineRepository;
-    @Override
-    public List<Discipline> getAll() {
-        return disciplineRepository.findAll();
-    }
+
+public class DisciplineImpl implements DisciplineService{
+        @Autowired
+        private DisciplineRepository disciplineRepository;
+        @Override
+        public List<Discipline> getAll() {
+            return disciplineRepository.findAll();
+        }
 }
+
+

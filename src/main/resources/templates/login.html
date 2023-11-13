@@ -1,0 +1,112 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Jogenda</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link th:href="@{/assets/img/favicon.png}" rel="icon">
+    <link th:href="@{assets/img/apple-touch-icon.png}" rel="apple-touch-icon">
+
+
+    <!-- Vendor CSS Files -->
+    <link th:href="@{assets/vendor/aos/aos.css}" rel="stylesheet">
+    <link th:href="@{assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+    <link th:href="@{assets/vendor/boxicons/css/boxicons.min.css}" rel="stylesheet">
+    <link th:href="@{assets/vendor/glightbox/css/glightbox.min.css}" rel="stylesheet">
+    <link th:href="@{assets/vendor/remixicon/remixicon.css}" rel="stylesheet">
+    <link th:href="@{assets/vendor/swiper/swiper-bundle.min.css}" rel="stylesheet">
+
+
+
+    <!-- Template Main CSS File -->
+    <link th:href="@{assets/css/style.css}" rel="stylesheet">
+</head>
+<body>
+<header id="header">
+
+    <h1 class="text-center me-auto">Connexion</h1>
+
+</header>
+
+
+<section >
+    <form class="text-center">
+        <p class="connectionp">Identifiant:</p>
+        <label><input  name ="login" id="login" placeholder="login" type="text"/></label>
+
+        <p class="connectionp">Mot de passe:</p>
+        <label><input type="password" name="password" id="password" placeholder="password"/></label>
+        <p id="statut"> </p>
+        <button value="Login" id="submitlogin"> Login</button>
+
+    </form>
+
+    <script>
+        let username = document.getElementById("login");
+        let password = document.getElementById("password");
+        let submit = document.getElementById("submitlogin");
+        console.log("script 1");
+        submit.addEventListener("click", async function (event) {
+            document.getElementById("statut").textContent="";
+            console.log("script 2");
+            event.preventDefault();
+            let data = {
+                'login': username.value,
+                'password': password.value
+            };
+            console.log("script 3");
+
+            let formBody = [];
+            for (let property in data) {
+                let encodedKey = encodeURIComponent(property);
+                let encodedValue = encodeURIComponent(data[property]);
+                formBody.push(encodedKey + "=" + encodedValue);
+            }
+            formBody = formBody.join("&");
+            console.log("script 4");
+            fetch("/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": 'application/x-www-form-urlencoded;charset=UTF-8'
+                },
+                body: formBody,
+                credentials: "same-origin"
+            }).then(function (response) {
+                console.log("script 5");
+                if (response.status == 200) {
+                    alert("Logged in");
+                    document.location.href ="http://localhost:8080/test1";
+
+                } else {
+                    document.getElementById("statut").textContent="Erreur";
+                    //alert("Wrong credentials");
+                }
+            })
+        });
+    </script>
+
+
+    <p id="resul"></p>
+
+    <script>
+        function domReady(f) {
+            const temps = document.getElementById("identity").textContent;
+            console.log(temps);
+            if( temps !== ""){
+                document.getElementById("resul").textContent = "Error";
+            }
+        }
+        // ifs
+
+    </script>
+
+</section>
+</body>
+</html>
