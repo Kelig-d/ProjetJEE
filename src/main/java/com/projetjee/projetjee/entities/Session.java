@@ -32,6 +32,6 @@ public class Session {
     private String description;
 
     @OneToOne
-    @JoinColumn(name="type_session", referencedColumnName = "type_session")
+    @JoinColumn(name="type_session", referencedColumnName = "nom")
     private TypeSession type_session;
 }
