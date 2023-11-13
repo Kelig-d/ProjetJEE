@@ -16,7 +16,7 @@ public class Site {
     private Long id_site;
     private String nom;
     private String ville;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "categorie", referencedColumnName = "nom")
     private Categorie categorie;
 }

@@ -15,7 +15,7 @@ public class Epreuve {
     @Id
     private Long id_epreuve;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_discipline", referencedColumnName = "id_discipline")
     private Discipline discipline;
 
