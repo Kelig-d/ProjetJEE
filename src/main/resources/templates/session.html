@@ -90,9 +90,9 @@
         </div>
         <div class ="form-part" hidden>
           <form>
-           Site :
-            <select class="form-select" id="selSite">
-              <option value='' disabled selected hidden>En chargement des sites</option>
+           Catégorie de site :
+            <select class="form-select" id="selCat">
+              <option value='' disabled selected hidden>En chargement des catégories</option>
             </select>
 
           </form>
@@ -111,7 +111,7 @@
   const myInput = document.getElementById('createSessionButton')
   const selDis = document.getElementById("selectDiscipline");
   const selEp = document.getElementById("selectEpreuve");
-  const selSite = document.getElementById("selSite");
+  const selCat = document.getElementById("selCat");
   const selEpBox = document.getElementById("selEpreuveBox");
   const nextBut = document.getElementById("next");
   const retBut = document.getElementById("ret");
@@ -160,12 +160,12 @@
       if(activeForm == 1){
         var response = await fetch('/createSessionSites')
                 .then((res) => {
-                  selSite.innerHTML = "<option value='' disabled selected hidden>Choisissez un site</option>";
+                  selCat.innerHTML = "<option value='' disabled selected hidden>Choisissez un site</option>";
                   return res.json()
                 })
-
+        console.log(JSON.parse(response.sites));
         JSON.parse(response.sites).forEach((site)=>{
-            selSite.innerHTML += "<option>"+site.nom+"</option>";
+            selCat.innerHTML += "<option>"+site.categorie+"</option>";
             })
 
           }
