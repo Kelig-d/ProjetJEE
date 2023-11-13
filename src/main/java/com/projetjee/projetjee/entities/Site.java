@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class Site {
 
     @Id
-    private Long id;
+    private Long id_site;
     private String nom;
     private String ville;
     @OneToOne

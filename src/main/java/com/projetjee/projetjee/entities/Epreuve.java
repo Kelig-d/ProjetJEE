@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class Epreuve {
 
     @Id
-    private Long id;
+    private Long id_epreuve;
 
     @OneToOne
     @JoinColumn(name = "id_discipline", referencedColumnName = "id_discipline")

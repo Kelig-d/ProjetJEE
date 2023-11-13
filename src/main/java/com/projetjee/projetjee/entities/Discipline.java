@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class Discipline {
 
     @Id
-    private Long id;
+    private Long id_discipline;
     private String nom;
     private boolean paralympique;
 }
