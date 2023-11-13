@@ -13,7 +13,12 @@ public class FrontController {
     }
 
     @GetMapping("/site")
-    public String sessionPage(){
+    public String sitePage(){
         return "site";
+    }
+
+    @GetMapping("/discipline")
+    public String disciplinePage(){
+        return "discipline";
     }
 }
