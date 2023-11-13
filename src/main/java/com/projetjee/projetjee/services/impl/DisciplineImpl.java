@@ -1,4 +1,4 @@
-package com.projetjee.projetjee.services.impl;
+package com.projetjee.projetjee.services.cmf;
 
 import com.projetjee.projetjee.entities.Discipline;
 import com.projetjee.projetjee.repository.DisciplineRepository;
@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-
 @Service
 public class DisciplineImpl implements DisciplineService{
 
@@ -19,5 +17,8 @@ public class DisciplineImpl implements DisciplineService{
         return disciplineRepository.findAll().stream()
                 .map(Discipline::getNom).toList();
     }
-
+    @Override
+    public List<Discipline> getAll() {
+        return disciplineRepository.findAll();
+    }
 }

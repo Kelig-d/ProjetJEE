@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+
+    <script>
+        async function checkToken() {
+            console.log("Check Token ! ")
+            let cookie = document.cookie;
+            console.log(cookie.toString());
+            cookie = cookie.split(";");
+            console.log(cookie.toString());
+            cookie = cookie.find((element) => {
+                return element.includes("JWebToken");
+            })
+
+
+            if (cookie !== undefined) {
+                let token = cookie.split("=")[1];
+                let req = await fetch("/token", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                    , body: JSON.stringify({token: token})
+                })
+                let res = await req.text();
+                if (res === "unauthorized") {
+                    console.log("not logged");
+                    alert("Cookie faux ou expirer, veuillez vous reconecter.");
+                    document.location.href ="http://localhost:8080/login";
+                } else {
+                    console.log("test");
+                    privileges = parseInt(res);
+                    // verif de page si l'utilisateur a accès a cette page.
+                }
+            }else{
+                alert("Cookie faux ou expirer, veuillez vous reconecter.");
+                document.location.href ="http://localhost:8080/login";
+            }
+        }
+
+        checkToken();
+
+
+    </script>
+
+</head>
+<body>
+
+</body>
+</html>
