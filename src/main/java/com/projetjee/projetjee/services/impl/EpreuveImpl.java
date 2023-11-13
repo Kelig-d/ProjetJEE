@@ -17,6 +17,7 @@ public class EpreuveImpl implements EpreuveService {
 
     @Override
     public List<String> getByDiscipline(String nom){
-        return epreuveRepository.findAllByDiscipline_Nom(nom);
+        return epreuveRepository.findAllByDiscipline_Nom(nom).stream()
+                .map(Epreuve.Nom::getNom).toList();
     }
 }

@@ -67,7 +67,7 @@
 </main><!-- End #main -->
 
 
-<div class="modal" tabindex="-1" id="createSessionModal">
+<div class="modal fade" tabindex="-1" id="createSessionModal">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -75,7 +75,6 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p>Modal body text goes here.</p>
         <div class ="form-part">
           <form>
             Discipline :
@@ -89,9 +88,19 @@
             </div>
           </form>
         </div>
+        <div class ="form-part" hidden>
+          <form>
+           Site :
+            <select class="form-select" id="selSite">
+              <option value='' disabled selected hidden>En chargement des sites</option>
+            </select>
+
+          </form>
+        </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-secondary" id="ret" hidden>Retour</button>
         <button type="button" class="btn btn-primary" id="next" disabled>Suivant</button>
       </div>
     </div>
@@ -102,39 +111,78 @@
   const myInput = document.getElementById('createSessionButton')
   const selDis = document.getElementById("selectDiscipline");
   const selEp = document.getElementById("selectEpreuve");
+  const selSite = document.getElementById("selSite");
   const selEpBox = document.getElementById("selEpreuveBox");
-  const selBut = document.getElementById("next");
+  const nextBut = document.getElementById("next");
+  const retBut = document.getElementById("ret");
+  const formParts = Array.prototype.slice.call(document.getElementsByClassName("form-part"));
 
+  let activeForm = 0;
+  var dis = "";
   myModal.addEventListener('shown.bs.modal', async () => {
     myInput.focus();
-    var response = await fetch('/createSessionDisciplines')
-              .then((res) => {
-                selDis.innerHTML = "<option value='' disabled selected hidden>Choisissez une discipline</option>";
-                return res.json()
-              })
-    response.disciplines.forEach((dis)=>{
-      selDis.innerHTML += "<option>"+dis+"</option>";
-    })
+    if(!dis){
+      var response = await fetch('/createSessionDisciplines')
+                .then((res) => {
+                  selDis.innerHTML = "<option value='' disabled selected hidden>Choisissez une discipline</option>";
+                  return res.json()
+                })
+      response.disciplines.forEach((dis)=>{
+        selDis.innerHTML += "<option>"+dis+"</option>";
+      })
+    }
   })
-  selDis.addEventListener('change', async ()=>{
-    selEp.innerHTML = "<option>Choisissez une épreuve</option>";
-    var response = await fetch('/createSessionEpreuves/' + selDis.value)
+  selDis.addEventListener('change', async ()=> {
+    selEp.innerHTML = "<option value='' disabled selected hidden>Choisissez une épreuve</option>";
+    dis = selDis.value;
+    var response = await fetch('/createSessionEpreuves/' + dis)
             .then((res) => {
               return res.json()
             })
-    response.epreuves.forEach((ep)=>{
-      selEp.innerHTML += "<option>"+ep+"</option>";
+    response.epreuves.forEach((ep) => {
+      selEp.innerHTML += "<option>" + ep + "</option>";
     })
     selEpBox.hidden = false
-    selEp.addEventListener('change', async()=>{
-      selBut.disabled = false
+    selEp.addEventListener('change', async () => {
+      nextBut.disabled = false
 
     })
-    selBut.addEventListener('click', ()=>{
-
-    })
-
   })
+
+    nextBut.addEventListener('click', async ()=>{
+      activeForm++;
+      retBut.hidden = false;
+      formParts.map((formPart)=>{
+        formPart.hidden = true;
+      })
+      formParts[activeForm].hidden = false;
+
+      if(activeForm == 1){
+        var response = await fetch('/createSessionSites')
+                .then((res) => {
+                  selSite.innerHTML = "<option value='' disabled selected hidden>Choisissez un site</option>";
+                  return res.json()
+                })
+
+        JSON.parse(response.sites).forEach((site)=>{
+            selSite.innerHTML += "<option>"+site.nom+"</option>";
+            })
+
+          }
+    })
+
+  retBut.addEventListener('click', ()=> {
+    activeForm--;
+
+    formParts.map((formPart) => {
+      formPart.hidden = true;
+    })
+    formParts[activeForm].hidden = false;
+    if (activeForm == 0) {
+      retBut.hidden = true;
+    }
+  })
+
 
 </script>
 <!-- Vendor JS Files -->

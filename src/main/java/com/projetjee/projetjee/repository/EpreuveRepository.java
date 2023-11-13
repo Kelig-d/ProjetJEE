@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface EpreuveRepository extends JpaRepository<Epreuve, Long> {
-    List<String> findAllByDiscipline_Nom(String discipline);
+    List<Epreuve.Nom> findAllByDiscipline_Nom(String discipline);
 }

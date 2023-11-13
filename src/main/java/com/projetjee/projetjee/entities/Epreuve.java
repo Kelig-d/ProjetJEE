@@ -1,8 +1,6 @@
 package com.projetjee.projetjee.entities;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
@@ -19,11 +17,9 @@ public class Epreuve {
     @JoinColumn(name = "id_discipline", referencedColumnName = "id_discipline")
     private Discipline discipline;
 
+    @Getter
     private String nom;
 
-    public String getNom(){
-        return this.nom;
-    }
     public interface Nom{
         String getNom();
     }
