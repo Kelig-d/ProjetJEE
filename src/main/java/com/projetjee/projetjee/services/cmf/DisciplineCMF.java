@@ -17,30 +17,29 @@ public class DisciplineCMF implements DisciplineService{
 
     // Save Discipline
     @Override
-    public Discipline saveDiscipline(Discipline discipline)
+    public Discipline saveDiscipline(String nom, Boolean paralympique)
     {
+        Discipline discipline = new Discipline();
+        discipline.setNom(nom);
+        discipline.setParalympique(paralympique);
         return disciplineRepository.save(discipline);
     }
 
-    // Read Discipline
-    @Override public List<Discipline> fetchDisciplineList()
-    {
-        return (List<Discipline>)disciplineRepository.findAll();
-    }
+    // Read Discipline with epreuve
+    @Override
+    public List<Discipline> findAll(){return (List<Discipline>)disciplineRepository.findAllEpreuveDiscipline();}
 
     // Update Discipline
     @Override
-    public Discipline updateDiscipline(Discipline disciplineOlympique, Long id_discipline)
+    public Discipline updateDiscipline(Long id_discipline ,String nom, Boolean paralympique)
     {
         Discipline discipline = disciplineRepository.findById(id_discipline).get();
 
-        if (Objects.nonNull(discipline.getNom()) && !"".equalsIgnoreCase(discipline.getNom())) {
-            discipline.setNom(discipline.getNom());
+        if (Objects.nonNull(discipline.getNom()) && !"".equalsIgnoreCase(nom)) {
+            discipline.setNom(nom);
         }
 
-        if (Objects.nonNull(discipline.getParalympique()) && !"".equalsIgnoreCase(String.valueOf(discipline.getParalympique()))) {
-            discipline.setParalympique(discipline.getParalympique());
-        }
+        discipline.setParalympique(paralympique);
 
         return disciplineRepository.save(discipline);
     }
@@ -49,6 +48,7 @@ public class DisciplineCMF implements DisciplineService{
     @Override
     public void deleteDisciplineById(Long id_discipline)
     {
+
         disciplineRepository.deleteById(id_discipline);
     }
 }

@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class Epreuve {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id_epreuve;
 
     @ManyToOne
@@ -21,10 +22,25 @@ public class Epreuve {
 
     private String nom;
 
-    public String getNom(){
-        return this.nom;
+    public Long getId_epreuve() {
+        return id_epreuve;
     }
-    public interface Nom{
-        String getNom();
+
+    public void setId_epreuve(Long id_epreuve) {
+        this.id_epreuve = id_epreuve;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public Discipline getDiscipline(){ return discipline;}
+
+    public void setDiscipline(Discipline discipline) {
+        this.discipline = discipline;
     }
 }
