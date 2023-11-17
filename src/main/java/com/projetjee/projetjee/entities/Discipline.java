@@ -13,10 +13,13 @@ import lombok.NoArgsConstructor;
 public class Discipline {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_discipline;
     private String nom;
-    private boolean paralympique;
+    private Boolean paralympique;
+
+    @Column(name = "name_epreuve",insertable = false,updatable = false)
+    private String name_epreuve;
 
     public Long getId_discipline() {
         return id_discipline;

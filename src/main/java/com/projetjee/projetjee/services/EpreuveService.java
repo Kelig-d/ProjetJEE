@@ -8,4 +8,6 @@ public interface EpreuveService {
     List<String> getByDiscipline(String discipline);
 
     Epreuve getByDisciplineAndNom(String discipline, String nom);
+    // Read Discipline with epreuve
+    List<Epreuve> findAllEpreuveByDiscipline(Long id);
 }
