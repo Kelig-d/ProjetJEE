@@ -1,6 +1,7 @@
 package com.projetjee.projetjee.services.impl;
 
 import com.projetjee.projetjee.entities.Session;
+import com.projetjee.projetjee.entities.Site;
 import com.projetjee.projetjee.repository.SessionRepository;
 import com.projetjee.projetjee.services.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,32 @@ public class SessionImpl implements SessionService {
     private SessionRepository sessionRepository;
     @Override
     public List<Session.dates> getDatesBySite(String site) {
-        return sessionRepository.findAllBySite_Nom(site);
+        return sessionRepository.findAllBySite_Nom(site, Session.dates.class);
     }
+
+    @Override
+    public List<Session> getAll(){
+        return sessionRepository.findAll();
+    }
+
+    @Override
+    public String getCode(String discipline) {
+        try {
+            String lc = sessionRepository.findFirstByOrderByCodeDesc().getCode().substring(3);
+            String i = Integer.parseInt(lc) > 9 ? ""+(Integer.parseInt(lc)+1) : "0"+(Integer.parseInt(lc)+1);
+            return discipline.substring(0,3) + i;
+        }
+        catch (Exception e){
+            return discipline.substring(0,3) + "01";
+        }
+
+    }
+
+    @Override
+    public void save(Session session) {
+        sessionRepository.saveAndFlush(session);
+    }
+
+
 
 }

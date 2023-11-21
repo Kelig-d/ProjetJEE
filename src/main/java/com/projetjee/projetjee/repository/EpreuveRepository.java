@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface EpreuveRepository extends JpaRepository<Epreuve, Long> {
     List<Epreuve.Nom> findAllByDiscipline_Nom(String discipline);
+
+    Epreuve findFirstByDiscipline_NomAndNom(String discipline, String nom);
 }

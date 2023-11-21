@@ -7,5 +7,6 @@ import java.util.Map;
 
 public interface SiteService {
     Map<String,List<String>> getAllGroupByCategorie();
+    Site getSiteByNom(String nom);
 
 }

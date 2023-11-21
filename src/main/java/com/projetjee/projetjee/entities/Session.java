@@ -1,11 +1,14 @@
 package com.projetjee.projetjee.entities;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.data.domain.Persistable;
 
-import java.sql.Date;
-import java.sql.Time;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -13,7 +16,7 @@ import java.sql.Time;
 @Entity
 @Table(name = "Session")
 
-public class Session {
+public class Session implements Persistable<Long> {
 
     @Id
     private String code;
@@ -26,18 +29,47 @@ public class Session {
     @JoinColumn(name = "id_epreuve", referencedColumnName = "id_epreuve")
     private Epreuve epreuve;
 
-    private Date date;
-    private Time heureDebut;
-    private Time heureFin;
+    @Column(name = "date_debut")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateDebut;
+    @Column(name = "date_fin")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateFin;
+
     private String description;
 
     @ManyToOne
     @JoinColumn(name="type_session", referencedColumnName = "nom")
     private TypeSession type_session;
 
+    @Transient
+    @Setter
+    private boolean isNew = true;
+    @Override
+    public Long getId() {
+        return null;
+    }
+
+    @Override
+    public boolean isNew() {
+        return isNew;
+    }
+
+
+
+    public interface sessionMinimized {
+        Date getDateDebut();
+        Date getDateFin();
+        String getEpreuveDisciplineNom();
+        Site.SiteMinimized getSite();
+
+    }
     public interface dates {
-        Date getDate();
-        Time getHeureDebut();
-        Time getHeureFin();
+        Date getDateDebut();
+        Date getDateFin();
+    }
+
+    public interface Code {
+        String getCode();
     }
 }

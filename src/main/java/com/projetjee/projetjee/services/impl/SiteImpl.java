@@ -21,4 +21,9 @@ public class SiteImpl implements SiteService {
 
     }
 
+    @Override
+    public Site getSiteByNom(String nom) {
+        return siteRepository.findFirstByNom(nom);
+    }
+
 }

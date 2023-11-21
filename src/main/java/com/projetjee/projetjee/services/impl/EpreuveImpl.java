@@ -20,4 +20,9 @@ public class EpreuveImpl implements EpreuveService {
         return epreuveRepository.findAllByDiscipline_Nom(nom).stream()
                 .map(Epreuve.Nom::getNom).toList();
     }
+
+    @Override
+    public Epreuve getByDisciplineAndNom(String discipline, String nom) {
+        return epreuveRepository.findFirstByDiscipline_NomAndNom(discipline, nom);
+    }
 }

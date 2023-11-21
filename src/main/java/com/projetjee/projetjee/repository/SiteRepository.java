@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface SiteRepository extends JpaRepository<Site, Long> {
     List<Site.SiteCategory> findAllProjectedBy();
+    Site findFirstByNom(String nom);
 }

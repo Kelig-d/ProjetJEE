@@ -30,4 +30,9 @@ public class Site {
         String getCategorieNom();
     }
 
+    public interface SiteMinimized {
+        String getNom();
+        String getVille();
+    }
+
 }
