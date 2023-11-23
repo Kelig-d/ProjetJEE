@@ -27,9 +27,10 @@ public class FrontController {
         return "index";
     }
 
-    @GetMapping("/session")
-    public String sessionPage(){
-        return "session";
+
+    @GetMapping("/discipline")
+    public String disciplinePage(){
+        return "discipline";
     }
 
     @GetMapping("/site")
