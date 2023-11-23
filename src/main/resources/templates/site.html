@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Gestion des sessions</title>
+  <meta charset="UTF-8">
+  <title>Jogenda</title>
 
 
   <!-- Favicons -->
@@ -15,19 +15,6 @@
 
   <!-- Template Main CSS File -->
   <link th:href="@{assets/css/style.css}" rel="stylesheet">
-  <link th:href="@{assets/vendor/bootstrap-icons/bootstrap-icons.min.css}" rel="stylesheet">
-
-  <link href=
-                'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css'
-        rel='stylesheet'>
-
-  <script src=
-                  "https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" >
-  </script>
-
-  <script src=
-                  "https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" >
-  </script>
 
 
 </head>
@@ -41,27 +28,13 @@
 
     <nav id="navbar" class="navbar">
       <ul>
-        <li><a class="nav-link" href="/">Home</a></li>
-        <li><a class="nav-link active" href="/session">Sessions</a></li>
-        <li class="dropdown"><a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
-          <ul>
-            <li><a href="#">Drop Down 1</a></li>
-            <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
-              <ul>
-                <li><a href="#">Deep Drop Down 1</a></li>
-                <li><a href="#">Deep Drop Down 2</a></li>
-                <li><a href="#">Deep Drop Down 3</a></li>
-                <li><a href="#">Deep Drop Down 4</a></li>
-                <li><a href="#">Deep Drop Down 5</a></li>
-              </ul>
-            </li>
-            <li><a href="#">Drop Down 2</a></li>
-            <li><a href="#">Drop Down 3</a></li>
-            <li><a href="#">Drop Down 4</a></li>
-          </ul>
-        </li>
+        <li><a class="nav-link scrollto" href="/">Home</a></li>
+        <li><a class="nav-link scrollto active" href="/site">Sites</a></li>
+        <li><a class="nav-link scrollto" href="/discipline">Disciplines</a></li>
+        <li><a class="nav-link scrollto" href="/session">Sessions</a></li>
+        <li><a class="nav-link scrollto" href="#team">Team</a></li>
         <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
-        <li><a class="getstarted scrollto" href="#about">Get Started</a></li>
+        <li><a class="getstarted scrollto" href="/getdeco">Déconnexion</a></li>
       </ul>
       <i class="bi bi-list mobile-nav-toggle"></i>
     </nav><!-- .navbar -->
@@ -69,126 +42,126 @@
   </div>
 </header><!-- End Header -->
 
-<section id="hero" class="d-flex align-items-center text-centered">
-  <table class="table table-striped m-5 overflow-hidden rounded-3 ">
-    <thead>
-    <tr>
-      <th class="p-3" >Code</th>
-      <th class="p-3">Site</th>
-      <th class="p-3">Épreuve</th>
-      <th class="p-3">Date de début</th>
-      <th class="p-3">Date de fin</th>
-      <th class="p-3">Description</th>
-      <th class="p-3">Type de session</th>
-      <th class="p-3">Actions</th>
-    </tr>
-    </thead>
-    <tbody id="sessionTable">
-    </tbody>
-  </table>
-
-</section>
-
-<!-- End Hero -->
-
+<section id="void"></section>
 <main id="main">
+  <div class="container">
+    <div class="title">
+      <h1>Sites Olympiques</h1>
+      <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#create">
+        Ajout site
+      </button>
+    </div>
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Nom</th>
+        <th scope="col">Ville</th>
+        <th scope="col">Catégorie</th>
+        <th scope="col">Modifier</th>
+        <th scope="col">Supprimer</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="site : ${site}">
+        <th th:text="${site.id_site}" scope="row"></th>
+        <td th:text="${site.nom}"></td>
+        <td th:text="${site.ville}"></td>
+        <td th:text="${site.categorie.nom}"></td>
+        <td>
+          <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#edited">
+            Modifier
+          </button>
+        </td>
+        <td>
+          <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#delete">
+            Supprimer
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+<!-- End #main -->
 
-  <button type="button" id="createSessionButton" value="create" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createSessionModal">
-    Créer une session
-  </button>
-</main><!-- End #main -->
-
-
-<div class="modal fade" tabindex="-1" id="createSessionModal">
+<!-- Modal Créer -->
+<div class="modal fade modal-lg" id="create" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Créer une session</h5>
+      <div class="modal-header text-center">
+        <h1 class="modal-title fs-5 col-12 " id="createLabel">Ajouter un site</h1>
       </div>
       <div class="modal-body">
-        <form id="creator" method="post" th:action="@{/createSession}">
-        <fieldset class ="form-part">
-          <label for="selectDiscipline">Discipline</label><select name="discipline" class="form-select" id="selectDiscipline">
-              <option value='' disabled selected hidden>En chargement des disciplines</option>
-            </select>
-            <fieldSet id="selEpreuveBox" hidden>
-              <label for="selectEpreuve">Epreuve</label><select name="epreuve" class="form-select" id="selectEpreuve">
-              </select>
-            </fieldSet>
-        </fieldset>
+      <form action="/add_site" method="post">
 
-        <fieldset class ="form-part" hidden>
-          <label for="selCat">Catégorie du site</label><select name="categorie" class="form-select" id="selCat">
-              <option value='' disabled selected hidden>En chargement des catégories</option>
-            </select>
-            <fieldset id="selSiteBox" hidden>
-              <label for="selSite">Site</label><select name="site" class="form-select" id="selSite">
-                <option value='' disabled selected hidden>En chargement des sites</option>
-              </select>
-            </fieldset>
-        </fieldset>
+          <div class="mb-3">
+            <label for="nom" class="col-sm-3 col-form-label">Nom du site</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="nom" name="nameSite">
+            </div>
+          </div>
 
-        <fieldset class ="form-part input-group" hidden>
-          <label for="startDate">Date de la session</label><input name="startDate" id="startDate"/>
-          <span class="input-group-text">
-            <i class="bi bi-calendar3"></i>
-          </span>
-          <fieldset hidden id="startTimeBox">
-            <label for="startTime">Heure de début</label><select name="startTime" class="form-select" id="startTime"></select>
+          <div class="mb-3">
+            <label for="ville" class="col-sm-3 col-form-label">Ville</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="ville" name="nameVille">
+            </div>
+          </div>
+
+
+          <fieldset class="mb-3">
+            <legend class="col-form-label col-sm-4 pt-0">Catégorie</legend>
+            <div class="col-sm-10">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="categorie" id="id_radio1" value="Stade" checked>
+                <label class="form-check-label" for="id_radio1">
+                  Stade
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="categorie" id="id_radio2" value="Salle de spectacle">
+                <label class="form-check-label" for="id_radio2">
+                  Salle de spectacle
+                </label>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="categorie" id="id_radio3" value="Lieu publique">
+                <label class="form-check-label" for="id_radio3">
+                  Lieu publique
+                </label>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="categorie" id="id_radio4" value="Centre aquatique">
+                <label class="form-check-label" for="id_radio4">
+                  Centre aquatique
+                </label>
+              </div>
+            </div>
+
           </fieldset>
-          <fieldset hidden id="endTimeBox">
-            <label for="endTime">Heure de fin</label><select name="endTime" class="form-select" id="endTime"></select>
-          </fieldset>
-        </fieldset>
 
-          <fieldset class="form-part" hidden>
-            <label for="sessionType">Type de session</label><select name="typeSession" class="form-select" id="sessionType">
-                <option value='' disabled selected hidden>Type de session</option>
-            </select>
-
-            <label for="sessionDescription">Description</label>
-            <textarea  name="desc" rows="4" cols="50" class="form-control" id="sessionDescription" placeholder="Description de la session"></textarea>
-
-          </fieldset>
-
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="cancel">Annuler</button>
-        <button type="button" class="btn btn-secondary" id="ret" hidden>Retour</button>
-        <button type="button" class="btn btn-primary" id="next" form="creator" disabled>Suivant</button>
-      </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+          <button type="submit" class="btn btn-success">Valider</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
-<div class="modal fade" tabindex="-1" id="alertModal">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Réponse</h5>
-      </div>
-      <div class="modal-body" id="alertMessage">
+<!-- Fin Modal Créer -->
 
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-      </div>
-      </div>
-    </div>
-  </div>
-<script th:src="@{/assets/js/loadData.js}"></script>
-<script th:src="@{/assets/js/createSessionFormHandler.js}"></script>
+<!-- Modal Modifier-->
+<!-- Fin Modal Modifier -->
+
+<!-- Modal Supprimer-->
+<!-- Fin Modal Supprimer -->
 
 <!-- Vendor JS Files -->
 <script src="assets/vendor/bootstrap/js/bootstrap.min.js"></script>
-<script type="module">
-await loadSession();
 
-createButtonListeners();
-
-
-
-</script>
 <!-- Template Main JS File -->
 <script src="assets/js/main.js"></script>
 
