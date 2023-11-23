@@ -44,7 +44,7 @@ public class Session implements Persistable<Long> {
     private TypeSession type_session;
 
     @Transient
-    @Setter
+
     private boolean isNew = true;
     @Override
     public Long getId() {
@@ -54,6 +54,9 @@ public class Session implements Persistable<Long> {
     @Override
     public boolean isNew() {
         return isNew;
+    }
+    public void setIsNew(boolean isNew) {
+        this.isNew = isNew;
     }
 
 

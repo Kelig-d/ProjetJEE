@@ -42,6 +42,9 @@ public class SessionImpl implements SessionService {
         sessionRepository.saveAndFlush(session);
     }
 
-
+    @Override
+    public void delete(String session) {
+        sessionRepository.deleteByCode(session);
+    }
 
 }

@@ -113,7 +113,7 @@ public class SessionController {
                         if(limit>s.getDateDebut().getHour()+1) limit = s.getDateDebut().getHour();
                     }
                     else{
-                        if(limit>s.getDateDebut().getHour()) limit = s.getDateDebut().getHour();
+                        if(limit>s.getDateDebut().getHour() && s.getEpreuve().getDiscipline().getNom() == session.get("epreuveDisciplineNom")) limit = s.getDateDebut().getHour();
                     }
                 }
             }
@@ -155,10 +155,13 @@ public class SessionController {
             s.setDateFin(dateFin.toLocalDateTime());
             s.setDescription(session.getFirst("desc"));
             s.setType_session(new TypeSession(session.getFirst("typeSession")));
-            if (session.getFirst("code") != null) s.setCode(session.getFirst("code"));
+            if (session.getFirst("code") != null && session.getFirst("code") != "") {
+                s.setCode(session.getFirst("code"));
+                s.setIsNew(false);
+            }
             else s.setCode(sessionService.getCode(session.getFirst("discipline")));
             sessionService.save(s);
-            return new ResponseEntity<>("Session créée", HttpStatus.OK);
+            return new ResponseEntity<>("Session créée", HttpStatus.CREATED);
         }
         catch(Exception e){
             return new ResponseEntity<>("Une erreur est survenue", HttpStatus.BAD_REQUEST);
@@ -173,5 +176,17 @@ public class SessionController {
         JSONObject response = new JSONObject();
         response.put("sessions", mapper.writeValueAsString(sessionService.getAll()));
         return ResponseEntity.ok(response);
+    }
+
+    @ResponseBody
+    @PostMapping("/deleteSession")
+    public ResponseEntity<String> deleteSession(@RequestBody LinkedHashMap<String, String> session){
+        try {
+            sessionService.delete(session.get("code"));
+            return new ResponseEntity<>("Session supprimée", HttpStatus.OK);
+        }
+        catch(Exception e){
+            return new ResponseEntity<>("Une erreur est survenue", HttpStatus.BAD_REQUEST);
+        }
     }
 }

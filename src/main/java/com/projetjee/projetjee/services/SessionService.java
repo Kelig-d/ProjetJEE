@@ -12,4 +12,6 @@ public interface SessionService {
     String getCode(String discipline);
 
     void save(Session session);
+
+    void delete(String session);
 }
