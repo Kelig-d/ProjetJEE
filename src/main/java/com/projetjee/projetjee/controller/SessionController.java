@@ -3,9 +3,11 @@ package com.projetjee.projetjee.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.projetjee.projetjee.entities.*;
 import com.projetjee.projetjee.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,7 @@ import java.lang.reflect.Array;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
@@ -77,17 +80,15 @@ public class SessionController {
             List<String> heureDebuts = new ArrayList<>();
             List<Session> sessions = sessionService.getAll();
             for (Session s : sessions) {
-                if (!(s.getDateFin().getTime() < (long) (session.get("dateDebut")) || s.getDateDebut().getTime() > (long) (session.get("dateDebut")) + 82800000)) {
+                if (!(Timestamp.valueOf(s.getDateFin()).getTime() < (long) (session.get("dateDebut")) || Timestamp.valueOf(s.getDateDebut()).getTime() > (long) (session.get("dateDebut")) + 82800000)) {
                     LinkedHashMap<String, String> hm = (LinkedHashMap<String, String>) (session.get("site"));
                     String siteName =  hm.get("nom");
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTime(s.getDateDebut());
-                    int firstHour = cal.get(Calendar.HOUR_OF_DAY);
+
+                    int firstHour = s.getDateDebut().getHour();
                     int lastHour = 0;
-                    cal.setTime(s.getDateFin());
-                    if (Objects.equals(s.getEpreuve().getDiscipline().getNom(),session.get("epreuveDisciplineNom"))) lastHour = cal.get(Calendar.HOUR_OF_DAY);
+                    if (Objects.equals(s.getEpreuve().getDiscipline().getNom(),session.get("epreuveDisciplineNom"))) lastHour = s.getDateDebut().getHour();
                     if (Objects.equals(s.getSite().getNom(), siteName)){
-                        lastHour = cal.get(Calendar.HOUR_OF_DAY)+1;
+                        lastHour = s.getDateFin().getHour()+1;
                         firstHour--;
                     }
 
@@ -106,14 +107,13 @@ public class SessionController {
             List<Session> sessions = sessionService.getAll();
             int limit = 24;
             for (Session s : sessions) {
-                if(s.getDateDebut().getTime()>=((long)session.get("dateDebut")+3600000)){
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTime(s.getDateDebut());
+                LocalDateTime selDate = new Timestamp((long)session.get("dateDebut")).toLocalDateTime();
+                if(s.getDateDebut().getDayOfMonth() == selDate.getDayOfMonth() && s.getDateDebut().getMonthValue() == selDate.getMonthValue() && s.getDateDebut().getYear() == selDate.getYear() && s.getDateDebut().getHour() > selDate.getHour()){
                     if(Objects.equals(s.getSite().getNom(), ((LinkedHashMap<String, String>) (session.get("site"))).get("nom"))){
-                        if(limit>cal.get(Calendar.HOUR_OF_DAY)+1) limit = cal.get(Calendar.HOUR_OF_DAY);
+                        if(limit>s.getDateDebut().getHour()+1) limit = s.getDateDebut().getHour();
                     }
                     else{
-                        if(limit>cal.get(Calendar.HOUR_OF_DAY)) limit = cal.get(Calendar.HOUR_OF_DAY);
+                        if(limit>s.getDateDebut().getHour()) limit = s.getDateDebut().getHour();
                     }
                 }
             }
@@ -139,26 +139,39 @@ public class SessionController {
 
     @ResponseBody
     @PostMapping("/createSession")
-    public ResponseEntity<JSONObject> createSession(@RequestBody MultiValueMap<String, String> session) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-        Date date = dateFormat.parse(session.getFirst("startDate") +" "+session.getFirst("startTime")+":00");
-        Timestamp dateDebut = new Timestamp(date.getTime());
-        date = dateFormat.parse(session.getFirst("startDate")+" " +session.getFirst("endTime")+":00");
-        Timestamp dateFin = new Timestamp(date.getTime());
-        Site site = siteService.getSiteByNom(session.getFirst("site"));
-        Epreuve ep = epreuveService.getByDisciplineAndNom(session.getFirst("discipline"), session.getFirst("epreuve"));
-        Session s = new Session();
-        s.setEpreuve(ep);
-        s.setSite(site);
-        s.setDateDebut(dateDebut);
-        s.setDateFin(dateFin);
-        s.setDescription(session.getFirst("description"));
-        s.setType_session(new TypeSession(session.getFirst("typeSession")));
-        if(session.getFirst("code")!=null) s.setCode(session.getFirst("code"));
-        else s.setCode(sessionService.getCode(session.getFirst("discipline")));
-        sessionService.save(s);
+    public ResponseEntity<String> createSession(@RequestBody MultiValueMap<String, String> session){
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            Date date = dateFormat.parse(session.getFirst("startDate") + " " + session.getFirst("startTime") + ":00");
+            Timestamp dateDebut = new Timestamp(date.getTime());
+            date = dateFormat.parse(session.getFirst("startDate") + " " + session.getFirst("endTime") + ":00");
+            Timestamp dateFin = new Timestamp(date.getTime());
+            Site site = siteService.getSiteByNom(session.getFirst("site"));
+            Epreuve ep = epreuveService.getByDisciplineAndNom(session.getFirst("discipline"), session.getFirst("epreuve"));
+            Session s = new Session();
+            s.setEpreuve(ep);
+            s.setSite(site);
+            s.setDateDebut(dateDebut.toLocalDateTime());
+            s.setDateFin(dateFin.toLocalDateTime());
+            s.setDescription(session.getFirst("desc"));
+            s.setType_session(new TypeSession(session.getFirst("typeSession")));
+            if (session.getFirst("code") != null) s.setCode(session.getFirst("code"));
+            else s.setCode(sessionService.getCode(session.getFirst("discipline")));
+            sessionService.save(s);
+            return new ResponseEntity<>("Session créée", HttpStatus.OK);
+        }
+        catch(Exception e){
+            return new ResponseEntity<>("Une erreur est survenue", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @ResponseBody
+    @GetMapping("/getSessions")
+    public ResponseEntity<JSONObject> getSessions() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
         JSONObject response = new JSONObject();
-        response.put("success", true);
+        response.put("sessions", mapper.writeValueAsString(sessionService.getAll()));
         return ResponseEntity.ok(response);
     }
 }

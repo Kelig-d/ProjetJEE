@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.domain.Persistable;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -31,10 +32,10 @@ public class Session implements Persistable<Long> {
 
     @Column(name = "date_debut")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date dateDebut;
+    private LocalDateTime dateDebut;
     @Column(name = "date_fin")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date dateFin;
+    private LocalDateTime dateFin;
 
     private String description;
 

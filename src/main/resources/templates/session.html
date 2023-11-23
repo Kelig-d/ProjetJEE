@@ -68,11 +68,29 @@
 
   </div>
 </header><!-- End Header -->
+
 <section id="hero" class="d-flex align-items-center">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Code</th>
+      <th>Site</th>
+      <th>Épreuve</th>
+      <th>Date de début</th>
+      <th>Date de fin</th>
+      <th>Description</th>
+      <th>Type de session</th>
+    </tr>
+    </thead>
+    <tbody id="sessionTable">
+    </tbody>
+  </table>
   <button type="button" id="createSessionButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createSessionModal">
     Créer une session
   </button>
+
 </section>
+
 <!-- End Hero -->
 
 <main id="main">
@@ -85,7 +103,6 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Créer une session</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form id="creator" method="post" th:action="@{/createSession}">
@@ -136,230 +153,57 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="cancel">Annuler</button>
         <button type="button" class="btn btn-secondary" id="ret" hidden>Retour</button>
         <button type="button" class="btn btn-primary" id="next" form="creator" disabled>Suivant</button>
       </div>
     </div>
   </div>
 </div>
-<script>
-  const myModal = document.getElementById('createSessionModal')
-  const myInput = document.getElementById('createSessionButton')
-  const selDis = document.getElementById("selectDiscipline");
-  const selEp = document.getElementById("selectEpreuve");
-  const selCat = document.getElementById("selCat");
-  const selSite = document.getElementById("selSite");
-  const selHeureDeb = document.getElementById("startTime");
-  const selHeureFin = document.getElementById("endTime");
-  const typeSess = document.getElementById("sessionType");
-  const descInput = document.getElementById("sessionDescription");
-  const selEpBox = document.getElementById("selEpreuveBox");
-  const selSiteBox = document.getElementById("selSiteBox");
-  const startTimeBox = document.getElementById("startTimeBox");
-  const endTimeBox = document.getElementById("endTimeBox");
+<div class="modal fade" tabindex="-1" id="alertModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Réponse</h5>
+      </div>
+      <div class="modal-body" id="alertMessage">
 
-  const nextBut = document.getElementById("next");
-  const retBut = document.getElementById("ret");
-  const formParts = Array.prototype.slice.call(document.getElementsByClassName("form-part"));
-  const form = document.getElementById("creator");
-  let activeForm = 0;
-  var dis = "";
-  myModal.addEventListener('shown.bs.modal', async () => {
-    myInput.focus();
-    if(!dis){
-      var response = await fetch('/createSessionDisciplines')
-                .then((res) => {
-                  selDis.innerHTML = "<option value='' disabled selected hidden>Choisissez une discipline</option>";
-                  return res.json()
-                })
-      response.disciplines.forEach((dis)=>{
-        selDis.innerHTML += "<option value='"+dis+"'>"+dis+"</option>";
-      })
-    }
-  })
-  selDis.addEventListener('change', async ()=> {
-    selEp.innerHTML = "<option value='' disabled selected hidden>Choisissez une épreuve</option>";
-    nextBut.disabled = true;
-    dis = selDis.value;
-    var response = await fetch('/createSessionEpreuves/' + dis)
-            .then((res) => {
-              return res.json()
-            })
-    response.epreuves.forEach((ep) => {
-      selEp.innerHTML += "<option value='"+ep+"'>" + ep + "</option>";
-    })
-    selEpBox.hidden = false
-    selEp.addEventListener('change', async () => {
-      nextBut.disabled = false
-
-    })
-  })
-  var sites;
-  var dates;
-  var heureFin;
-  var debug;
-  var formData;
-    nextBut.addEventListener('click', async (event)=>{
-      activeForm == 3 ? event.stopPropagation()  : activeForm++;
-      retBut.hidden = false;
-      formParts.map((formPart)=>{
-        formPart.hidden = true;
-      })
-      formParts[activeForm].hidden = false;
-
-      if(activeForm == 1 && !sites){
-        nextBut.disabled = true;
-        var response = await fetch('/createSessionSites')
-                .then((res) => {
-                  selCat.innerHTML = "<option value='' disabled selected hidden>Choisissez une catégorie</option>";
-                  return res.json()
-                })
-        sites = JSON.parse(response.sites)
-        Object.keys(sites).forEach((key)=>{
-            selCat.innerHTML += "<option value='"+key+"'>"+key+"</option>";
-            })
-          }
-      if(activeForm == 2 && !heureFin){
-        nextBut.disabled = true;
-        var response = await fetch('/getDates/'+selSite.value)
-                .then((res) => {
-                  return res.json()
-                })
-        dates = JSON.parse(response.dates);
-
-      }
-      if(activeForm == 3 && !typeSess.value){
-        nextBut.disabled = true;
-        nextBut.innerText = "Créer";
-        nextBut.type = "submit";
-        var response = await fetch('/getTypeSessions')
-                .then((res) => {
-                  return res.json()
-                })
-        debug = response;
-        response.typeSessions.forEach((type)=>{
-            typeSess.innerHTML += "<option value='"+type.nom+"'>"+type.nom+"</option>";
-        })
-
-      }
-
-
-    })
-
-  selCat.addEventListener('change', () => {
-    selSite.innerHTML = "<option value='' disabled selected hidden>Choisissez un site</option>";
-    selSiteBox.hidden = false;
-    sites[selCat.value].forEach((site) => {
-      selSite.innerHTML += "<option value='"+site+"'>" + site + "</option>";
-    })
-  })
-
-  selSite.addEventListener('change', () => {
-    nextBut.disabled = false;
-  })
-  retBut.addEventListener('click', ()=> {
-    activeForm--;
-
-    formParts.map((formPart) => {
-      formPart.hidden = true;
-    })
-    formParts[activeForm].hidden = false;
-    if (activeForm == 0) {
-      retBut.hidden = true;
-    }
-  })
-
-  function WarnDays(date) {
-      var fDate = $.datepicker.formatDate('dd-mm-yy', date);
-      var res = [true,''];
-      $.each(dates, function (i, e) {
-        let dateString = new Date(e.dateDebut);
-        if(fDate === dateString.getDate()+"-"+(dateString.getMonth()+1)+"-"+dateString.getFullYear()){
-          res = [true, 'ui-state-highlight', 'Une session est déjà présente sur cette date'];
-        }
-      });
-    return res;
-
-  }
-  $("#startDate").datepicker({
-    uiLibrary: 'bootstrap5',
-    dateFormat: 'dd-mm-yy',
-    minDate: 0,
-    beforeShowDay: WarnDays,
-    onSelect:(function() {
-      nextBut.disabled = true;
-      endTimeBox.hidden = true;
-      let selected = $(this).datepicker("getDate");
-        fetch("/getTimesByDate", ({
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            dateDebut: selected.getTime(),
-            epreuveDisciplineNom: dis,
-            site: {
-              nom: selSite.value
-            }
-          })
-        }))
-                .then((res) => {
-                  return res.json()
-                })
-                .then((res) => {
-                  selHeureDeb.innerHTML = "<option value='' disabled selected hidden>Choisissez une heure de début</option>";
-                  res.heureDebuts.forEach((time) => {
-                    selHeureDeb.innerHTML += "<option value='"+time+"'>" + time + "</option>";
-                  })
-
-                  startTimeBox.hidden = false;
-                })
-    })
-  });
-
-    selHeureDeb.addEventListener("change", ()=>{
-        fetch("/getTimesByDate", ({
-            method: 'POST',
-            headers: {
-            'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-            dateDebut: $("#startDate").datepicker("getDate").getTime()+(selHeureDeb.value.split(":")[0]*60*60*1000)+(selHeureDeb.value.split(":")[1]*60*1000),
-            dateFin:1,
-            epreuveDisciplineNom: dis,
-            site: {
-                nom: selSite.value
-            },
-            })
-        }))
-                .then((res) => {
-                    return res.json()
-                })
-                .then((res) => {
-                    selHeureFin.innerHTML = "<option value='' disabled selected hidden>Choisissez une heure de fin</option>";
-                    res.heureFins.forEach((time) => {
-                    selHeureFin.innerHTML += "<option value='"+time+"'>" + time + "</option>";
-                    })
-                    endTimeBox.hidden = false;
-                })
-
-        })
-
-    selHeureFin.addEventListener("change", ()=>{
-      heureFin = selHeureFin.value;
-      nextBut.disabled = false;
-    })
-
-    typeSess.addEventListener("change", ()=>{
-      nextBut.disabled = false;
-    })
-
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fermer</button>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script th:src="@{/assets/js/createSessionFormHandler.js}">
 
 </script>
 <!-- Vendor JS Files -->
 <script src="assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script type="module">
 
+  fetch('/getSessions')
+          .then(res => res.json())
+          .then(res=>{
+            let data = JSON.parse(res["sessions"])
+            let table = document.getElementById("sessionTable")
+            data.forEach((entry)=>{
+              console.log(entry)
+              const dateDeb = new Date(entry.dateDebut[0],entry.dateDebut[1], entry.dateDebut[2], entry.dateDebut[3], entry.dateDebut[4]).toLocaleString();
+              const dateFin = new Date(entry.dateFin[0],entry.dateFin[1], entry.dateFin[2], entry.dateFin[3], entry.dateFin[4]).toLocaleString();
+              table.innerHTML +="    <tr>\n" +
+                      "      <td>"+entry.code+"</td>\n" +
+                      "      <td>"+entry.site.nom+"</td>\n" +
+                      "      <td>"+entry.epreuve.nom+"</td>\n" +
+                      "      <td>"+dateDeb+"</td>\n" +
+                      "      <td>"+dateFin+"</td>\n" +
+                      "      <td>"+entry.description+"</td>\n" +
+                      "      <td>"+entry.type_session.nom+"</td>\n" +
+                      "    </tr>"
+            })
+          })
+</script>
 <!-- Template Main JS File -->
 <script src="assets/js/main.js"></script>
 
