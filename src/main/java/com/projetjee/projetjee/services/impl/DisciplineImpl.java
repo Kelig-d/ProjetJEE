@@ -22,3 +22,5 @@ public class DisciplineImpl implements DisciplineService{
         return disciplineRepository.findAll();
     }
 }
+
+
