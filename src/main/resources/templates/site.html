@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Jogenda</title>
+
+
+  <!-- Favicons -->
+  <link th:href="@{/assets/img/favicon.png}" rel="icon">
+  <link th:href="@{assets/img/apple-touch-icon.png}" rel="apple-touch-icon">
+
+
+  <!-- Vendor CSS Files -->
+  <link th:href="@{assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link th:href="@{assets/css/style.css}" rel="stylesheet">
+
+
+</head>
+<body>
+
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top ">
+  <div class="container d-flex align-items-center">
+
+    <h1 class="logo me-auto"><a href="index.html">Jogenda</a></h1>
+
+    <nav id="navbar" class="navbar">
+      <ul>
+        <li><a class="nav-link scrollto" href="/">Home</a></li>
+        <li><a class="nav-link scrollto active" href="/site">Sites</a></li>
+        <li><a class="nav-link scrollto" href="/discipline">Disciplines</a></li>
+        <li><a class="nav-link scrollto" href="/session">Sessions</a></li>
+        <li><a class="nav-link scrollto" href="#team">Team</a></li>
+        <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+        <li><a class="getstarted scrollto" href="/getdeco">Déconnexion</a></li>
+      </ul>
+      <i class="bi bi-list mobile-nav-toggle"></i>
+    </nav><!-- .navbar -->
+
+  </div>
+</header><!-- End Header -->
+
+<section id="void"></section>
+<main id="main">
+  <div class="container">
+    <div class="title">
+      <h1>Sites Olympiques</h1>
+      <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#createSite">
+        Ajout site
+      </button>
+    </div>
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Nom</th>
+        <th scope="col">Ville</th>
+        <th scope="col">Catégorie</th>
+        <th scope="col">Modifier</th>
+        <th scope="col">Supprimer</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="site : ${site}">
+        <th th:text="${site.id_site}" scope="row"></th>
+        <td th:text="${site.nom}"></td>
+        <td th:text="${site.ville}"></td>
+        <td th:text="${site.categorie.nom}"></td>
+        <td>
+          <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" th:attr="data-bs-target='#editedSite'+*{site.id_site}">
+            Modifier
+          </button>
+
+          <!-- Modal Modifier-->
+          <div class="modal fade modal-lg" th:id="'editedSite' + ${site.id_site}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="edited" aria-hidden="true">
+
+          <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header text-center">
+                  <h1 class="modal-title fs-5 col-12 " id="edited">Modifier Site</h1>
+                </div>
+                <form action="/edit_site" method="post">
+                  <div class="modal-body">
+                    <div class="row mb-3">
+                      <label class="col-sm-3 col-form-label">ID Site</label>
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control-plaintext" name="id_site" th:value="*{site.id_site}">
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="nameSi" class="col-sm-3 col-form-label">Nom du site</label>
+                      <div class="col-sm-9">
+                        <input id="nameSi" type="text" class="form-control" name="nameSite" th:value="*{site.nom}">
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="nameVi" class="col-sm-3 col-form-label">Ville</label>
+                      <div class="col-sm-9">
+                        <input id="nameVi" type="text" class="form-control" name="nameVille" th:value="*{site.ville} ">
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="modCat" class="col-sm-3 col-form-label">Catégorie</label>
+                      <div class="col-sm-9">
+                        <input id="modCat" type="text" class="form-control" name="categorie" th:value="*{site.categorie.nom} ">
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Valider</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- Fin Modal Modifier -->
+
+        </td>
+        <td>
+          <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" th:attr="data-bs-target='#deletedSite'+*{site.id_site}">
+            Supprimer
+          </button>
+
+          <!-- Modal Supprimer-->
+          <div class="modal fade modal-lg" th:id="'deletedSite' + ${site.id_site}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="col-12 modal-title fs-5 text-center">Supprimer un site</h1>
+                </div>
+                <div class="modal-body-delete">
+                  <div class="row">
+                    <label id="deleteLabel"  class="col-form-label">Êtes-vous sûr de vouloir supprimer ce site ? </label>
+                  </div>
+                </div>
+                <div class="modal-footer-delete">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                  <a th:href="@{/delete_site/{id}(id=${site.id_site})}"
+                     class="btn btn-danger">Supprimer</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Fin Modal Supprimer -->
+
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+<!-- End #main -->
+
+<!-- Modal Créer -->
+<div class="modal fade modal-lg" id="createSite" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h1 class="modal-title fs-5 col-12 " id="createLabel">Ajouter un site</h1>
+      </div>
+      <form id="formSite" action="/add_site" method="post">
+        <div class="modal-body">
+          <div class="row mb-3">
+            <label for="nameS" class="col-sm-3 col-form-label">Nom du site</label>
+            <div class="col-sm-9">
+              <input id="nameS" type="text" class="form-control" name="nameSite" required>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="nameV" class="col-sm-3 col-form-label">Ville</label>
+            <div class="col-sm-9">
+              <input id="nameV" type="text" class="form-control" name="nameVille" required>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="selCat" class="col-sm-3 col-form-label">Catégorie</label>
+            <div class="col-sm-9">
+              <select class="form-select" id="selCat" name="categorie">
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+          <button type="submit" class="btn btn-success" >Valider</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Fin Modal Créer -->
+
+<!-- Script  -->
+
+<script>
+  const myModaladd = document.getElementById('createSite');
+  const selCat = document.getElementById("selCat");
+  var cat = "";
+  var response = "";
+  myModaladd.addEventListener('shown.bs.modal', async () => {
+    if(!cat) {
+      response = await fetch('/createSessionCategorie')
+              .then((res) => {
+                selCat.innerHTML = "<option value='' disabled selected hidden>Choisissez une catégorie</option>";
+                return res.json()
+              })
+      response.categories.forEach((cat) => {
+        //console.log(cat)
+        selCat.innerHTML += "<option value='" + cat + "'>" + cat + "</option>";
+      })
+    }
+  })
+
+</script>
+
+<!-- Vendor JS Files -->
+<script src="assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Template Main JS File -->
+<script src="assets/vendor/aos/aos.js"></script>
+<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+<script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+<script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
+<script src="assets/vendor/php-email-form/validate.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Jogenda</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link th:href="@{/assets/img/favicon.png}" rel="icon">
+    <link th:href="@{assets/img/apple-touch-icon.png}" rel="apple-touch-icon">
+
+
+    <!-- Vendor CSS Files -->
+    <link th:href="@{assets/vendor/aos/aos.css}" rel="stylesheet">
+    <link th:href="@{assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+    <link th:href="@{assets/vendor/boxicons/css/boxicons.min.css}" rel="stylesheet">
+    <link th:href="@{assets/vendor/glightbox/css/glightbox.min.css}" rel="stylesheet">
+    <link th:href="@{assets/vendor/remixicon/remixicon.css}" rel="stylesheet">
+    <link th:href="@{assets/vendor/swiper/swiper-bundle.min.css}" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link th:href="@{assets/css/style.css}" rel="stylesheet">
+
+</head>
+
+<body>
+
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top ">
+    <div class="container d-flex align-items-center">
+
+        <h1 class="logo me-auto"><a href="index.html">Jogenda</a></h1>
+
+        <nav id="navbar" class="navbar">
+            <ul>
+                <li><a class="nav-link scrollto" href="/">Home</a></li>
+                <li><a class="nav-link scrollto" href="/site">Sites</a></li>
+                <li><a class="nav-link scrollto active" href="/discipline">Disciplines</a></li>
+                <li><a class="nav-link scrollto" href="/session">Sessions</a></li>
+                <li><a class="nav-link scrollto" href="#team">Team</a></li>
+                <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+                <li><a class="getstarted scrollto" href="/getdeco">Déconnexion</a></li>
+            </ul>
+            <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav><!-- .navbar -->
+
+    </div>
+</header><!-- End Header -->
+
+<!-- ======= Void Section ======= -->
+<section id="void"></section>
+<!-- End Void -->
+
+<!-- ======= Main Section ======= -->
+<main id="main">
+    <div class="container">
+        <div class="title">
+            <h1>Disciplines Olympiques</h1>
+            <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#create">
+                Nouvelle discipline
+            </button>
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Discipline</th>
+                <th scope="col">Épreuves</th>
+                <th scope="col">Paralympique</th>
+                <th scope="col">Modifier</th>
+                <th scope="col">Supprimer</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="discipline : ${disciplines}">
+                <th th:text="${discipline.id_discipline}" scope="row"></th>
+                <td th:text="${discipline.nom}"></td>
+                <td >epreuve</td>
+                <td th:text="${discipline.paralympique}"></td>
+                <td>
+                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#edited">
+                        Modifier
+                    </button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#delete">
+                        Supprimer
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+<!-- End #main -->
+
+<!-- Modal Créer -->
+<div class="modal fade modal-lg" id="create" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h1 class="modal-title fs-5 col-12 " id="createLabel">Ajouter une discipline</h1>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row mb-3">
+                        <label for="nameDiscipline" class="col-sm-3 col-form-label">Nom de la discipline</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="id">
+                        </div>
+                    </div>
+                    <fieldset class="row mb-3">
+                        <legend class="col-form-label col-sm-4 pt-0">Présente au Paralympique ?</legend>
+                        <div class="col-sm-10">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="gridRadios" id="id_radio1" value="oui" checked>
+                                <label class="form-check-label" for="gridRadios1">
+                                    Oui
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="gridRadios" id="id_radio2" value="non">
+                                <label class="form-check-label" for="gridRadios2">
+                                    Non
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-success">Valider</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fin Modal Créer -->
+
+<!-- Modal Modifier-->
+<div class="modal fade modal-lg" id="edited" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editedLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h1 class="modal-title fs-5 col-12 " id="editedLabel">Modifier discipline</h1>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row mb-3">
+                        <label for="nameDiscipline" class="col-sm-3 col-form-label">Nom de la discipline</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="nameDiscipline">
+                        </div>
+                    </div>
+                    <fieldset class="row mb-3">
+                        <legend class="col-form-label col-sm-4 pt-0">Présente au Paralympique ?</legend>
+                        <div class="col-sm-10">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="oui" checked>
+                                <label class="form-check-label" for="gridRadios1">
+                                    Oui
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="non">
+                                <label class="form-check-label" for="gridRadios2">
+                                    Non
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-primary">Valider</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fin Modal Modifier -->
+
+<!-- Modal Supprimer-->
+<div class="modal fade modal-lg" id="delete" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="col-12 modal-title fs-5 text-center">Supprimer une discipline</h1>
+            </div>
+            <div class="modal-body-delete">
+                <div class="row">
+                    <label id="deleteLabel" for="nameDiscipline" class="col-form-label">Êtes-vous sûr de vouloir supprimer cette discipline ? </label>
+                </div>
+            </div>
+            <div class="modal-footer-delete">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-danger">Supprimer</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fin Modal Supprimer -->
+
+<!-- Vendor JS Files -->
+<script src="assets/vendor/aos/aos.js"></script>
+<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+<script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+<script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
+<script src="assets/vendor/php-email-form/validate.js"></script>
+
+<!-- Template Main JS File -->
+<script src="assets/js/main.js"></script>
+
+</body>
+
+</html>
