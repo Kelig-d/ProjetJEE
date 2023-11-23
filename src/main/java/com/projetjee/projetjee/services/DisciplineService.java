@@ -1,11 +1,20 @@
-package com.projetjee.projetjee.services;
+package com.projetjee.projetjee.Services;
 
-import com.projetjee.projetjee.entities.Discipline;
+import com.projetjee.projetjee.entity.Discipline;
 
 import java.util.List;
 
 public interface DisciplineService {
 
-    List<String> getAllNames();
-    List<Discipline> getAll();
+    // Save Discipline
+    Discipline saveDiscipline(Discipline discipline);
+
+    // Read Discipline
+    List<Discipline> fetchDisciplineList();
+
+    // Update Discipline
+    Discipline updateDiscipline(Discipline discipline, Long id_discipline);
+
+    // Delete Discipline
+    void deleteDisciplineById(Long id_discipline);
 }

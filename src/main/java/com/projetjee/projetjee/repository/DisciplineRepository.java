@@ -1,11 +1,10 @@
-package com.projetjee.projetjee.repository;
-import com.projetjee.projetjee.entities.Discipline;
+package com.projetjee.projetjee.Repository;
+
+import com.projetjee.projetjee.entity.Discipline;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
+public interface DisciplineRepository extends JpaRepository<Discipline,Long> {
 
-@Repository
-public interface DisciplineRepository extends JpaRepository<Discipline, Long>
-{
 }
