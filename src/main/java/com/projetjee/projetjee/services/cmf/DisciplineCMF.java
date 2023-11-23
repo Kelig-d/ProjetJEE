@@ -4,6 +4,7 @@ import com.projetjee.projetjee.entities.Discipline;
 import com.projetjee.projetjee.repository.DisciplineRepository;
 import com.projetjee.projetjee.services.DisciplineService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -69,6 +70,11 @@ public class DisciplineCMF implements DisciplineService{
     @Override
     public Discipline getByNom(String nom) {
         return disciplineRepository.findFirstByNom(nom);
+    }
+
+    @Override
+    public Discipline getDisciplineById(Long id_discipline){
+        return disciplineRepository.getDisciplineById(id_discipline);
     }
 
 }

@@ -1,6 +1,8 @@
 package com.projetjee.projetjee.controller;
 
 import com.projetjee.projetjee.entities.Discipline;
+import com.projetjee.projetjee.entities.Epreuve;
+import com.projetjee.projetjee.entities.Session;
 import com.projetjee.projetjee.services.DisciplineService;
 import com.projetjee.projetjee.services.EpreuveService;
 import net.minidev.json.JSONObject;
@@ -9,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @Controller
@@ -46,8 +50,16 @@ public class EpreuveController {
     @GetMapping("/epreuve/delete/{id}")
     public String deleteEpreuveById(@PathVariable("id") Long id_epreuve)
     {
-        epreuveService.deleteEpreuveById(id_epreuve);
+        List<Epreuve> epreuvelist = epreuveService.getEpreuveById(id_epreuve);
+        Session  session = new Session();
+        for (Epreuve epreuve : epreuvelist) {
+            session= epreuveService.getSessionsByEpreuve(epreuve);
+        }
+        if(session==null){
+            epreuveService.deleteEpreuveById(id_epreuve);
+        }
         return "redirect:/epreuve";
+
     }
 
     @ResponseBody

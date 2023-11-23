@@ -4,6 +4,7 @@ import com.projetjee.projetjee.entities.*;
 import com.projetjee.projetjee.repository.*;
 import com.projetjee.projetjee.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,8 @@ public class EpreuveCMF implements EpreuveService {
 
     @Autowired
     private EpreuveRepository epreuveRepository;
+    @Autowired
+    private  SessionRepository sessionRepository;
 
     // Read Epreuve
     @Override
@@ -51,6 +54,19 @@ public class EpreuveCMF implements EpreuveService {
     public void deleteEpreuveById(Long id_discipline)
     {
         epreuveRepository.deleteById(id_discipline);
+    }
+
+    @Override
+    public Session getSessionsByEpreuve(Epreuve epreuve) {
+        return sessionRepository.getFirstByEpreuve( epreuve);
+    }
+    @Override
+    public  List<Epreuve> getEpreuveById(Long id_epreuve) {
+        return epreuveRepository.findEpreuveById_epreuve(id_epreuve);
+    }
+    @Override
+    public List<Epreuve> getEpreuveByDiscipline(Discipline discipline) {
+        return epreuveRepository.getEpreuveByDiscipline(discipline);
     }
 
 }

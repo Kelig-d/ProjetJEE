@@ -24,5 +24,7 @@ public interface DisciplineService {
     List<String> getAllNames();
 
     Discipline getByNom(String nom);
+
+    Discipline getDisciplineById(Long id_discipline);
 }
 
