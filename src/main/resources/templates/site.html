@@ -121,9 +121,32 @@
 
         </td>
         <td>
-          <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#delete">
+          <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" th:attr="data-bs-target='#deletedSite'+*{site.id_site}">
             Supprimer
           </button>
+
+          <!-- Modal Supprimer-->
+          <div class="modal fade modal-lg" th:id="'deletedSite' + ${site.id_site}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="col-12 modal-title fs-5 text-center">Supprimer un site</h1>
+                </div>
+                <div class="modal-body-delete">
+                  <div class="row">
+                    <label id="deleteLabel"  class="col-form-label">Êtes-vous sûr de vouloir supprimer ce site ? </label>
+                  </div>
+                </div>
+                <div class="modal-footer-delete">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                  <a th:href="@{/delete_site/{id}(id=${site.id_site})}"
+                     class="btn btn-danger">Supprimer</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Fin Modal Supprimer -->
+
         </td>
       </tr>
       </tbody>
@@ -170,9 +193,6 @@
   </div>
 </div>
 <!-- Fin Modal Créer -->
-
-<!-- Modal Supprimer-->
-<!-- Fin Modal Supprimer -->
 
 <!-- Script  -->
 
