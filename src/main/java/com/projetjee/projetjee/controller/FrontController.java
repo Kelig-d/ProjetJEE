@@ -12,10 +12,6 @@ public class FrontController {
         return "index";
     }
 
-    @GetMapping("/site")
-    public String sitePage(){
-        return "site";
-    }
 
     @GetMapping("/discipline")
     public String disciplinePage(){
