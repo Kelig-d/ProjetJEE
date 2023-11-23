@@ -20,10 +20,12 @@ public class SiteCMF implements SiteService {
     @Override
     public Site saveSite(String nom, String ville, Categorie categorie)
     {
+        System.out.println("Création du site");
         Site site = new Site();
         site.setNom(nom);
         site.setVille(ville);
         site.setCategorie(categorie);
+        System.out.println("Fin création du site");
         return siteRepository.save(site);
     }
 
@@ -31,9 +33,12 @@ public class SiteCMF implements SiteService {
     @Override
     public List<Site> findAll(){return (List<Site>)siteRepository.findAllSite();}
 
+    public List<String> getCategories(){
+        return (List<String>)siteRepository.getCategories();
+    }
     // Update Discipline
     @Override
-    public Site updateSite(Long id_site ,String nom, String ville, Categorie categorie)
+    public Site updateSite(Long id_site , String nom, String ville, Categorie categorie)
     {
         Site site = siteRepository.findById(id_site).get();
 
@@ -57,4 +62,11 @@ public class SiteCMF implements SiteService {
 
         siteRepository.deleteById(id_site);
     }
+
+
+    @Override
+    public Categorie getByNom(String nom) {
+        return (Categorie) siteRepository.findCategorie(nom);
+    }
+
 }

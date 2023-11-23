@@ -47,7 +47,7 @@
   <div class="container">
     <div class="title">
       <h1>Sites Olympiques</h1>
-      <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#create">
+      <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#createSite">
         Ajout site
       </button>
     </div>
@@ -86,66 +86,37 @@
 <!-- End #main -->
 
 <!-- Modal Créer -->
-<div class="modal fade modal-lg" id="create" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createLabel" aria-hidden="true">
+<div class="modal fade modal-lg" id="createSite" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h1 class="modal-title fs-5 col-12 " id="createLabel">Ajouter un site</h1>
+        <h1 class="modal-title fs-5 col-12 " id="createLabel">Ajouter une discipline</h1>
       </div>
-      <div class="modal-body">
-      <form action="/add_site" method="post">
-
-          <div class="mb-3">
-            <label for="nom" class="col-sm-3 col-form-label">Nom du site</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" id="nom" name="nameSite">
+      <form id="formSite" action="/add_site" method="post">
+        <div class="modal-body">
+          <div class="row mb-3">
+            <label for="nameS" class="col-sm-3 col-form-label">Nom du site</label>
+            <div class="col-sm-9">
+              <input id="nameS" type="text" class="form-control" name="nameSite" required>
             </div>
           </div>
-
-          <div class="mb-3">
-            <label for="ville" class="col-sm-3 col-form-label">Ville</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" id="ville" name="nameVille">
+          <div class="row mb-3">
+            <label for="nameV" class="col-sm-3 col-form-label">Ville</label>
+            <div class="col-sm-9">
+              <input id="nameV" type="text" class="form-control" name="nameVille" required>
             </div>
           </div>
-
-
-          <fieldset class="mb-3">
-            <legend class="col-form-label col-sm-4 pt-0">Catégorie</legend>
-            <div class="col-sm-10">
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="categorie" id="id_radio1" value="Stade" checked>
-                <label class="form-check-label" for="id_radio1">
-                  Stade
-                </label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="categorie" id="id_radio2" value="Salle de spectacle">
-                <label class="form-check-label" for="id_radio2">
-                  Salle de spectacle
-                </label>
-              </div>
-
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="categorie" id="id_radio3" value="Lieu publique">
-                <label class="form-check-label" for="id_radio3">
-                  Lieu publique
-                </label>
-              </div>
-
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="categorie" id="id_radio4" value="Centre aquatique">
-                <label class="form-check-label" for="id_radio4">
-                  Centre aquatique
-                </label>
-              </div>
+          <div class="row mb-3">
+            <label for="selCat" class="col-sm-3 col-form-label">Catégorie</label>
+            <div class="col-sm-9">
+              <select class="form-select" id="selCat" name="categorie">
+              </select>
             </div>
-
-          </fieldset>
-
+          </div>
+        </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-          <button type="submit" class="btn btn-success">Valider</button>
+          <button type="submit" class="btn btn-success" >Valider</button>
         </div>
       </form>
     </div>
@@ -159,11 +130,39 @@
 <!-- Modal Supprimer-->
 <!-- Fin Modal Supprimer -->
 
+<!-- Script  -->
+
+<script>
+  const myModal = document.getElementById('createSite');
+  const selCat = document.getElementById("selCat");
+  var cat = "";
+  var response = "";
+  myModal.addEventListener('shown.bs.modal', async () => {
+    if(!cat) {
+      response = await fetch('/createSessionCategorie')
+              .then((res) => {
+                selCat.innerHTML = "<option value='' disabled selected hidden>Choisissez une catégorie</option>";
+                return res.json()
+              })
+      response.categories.forEach((cat) => {
+        //console.log(cat)
+        selCat.innerHTML += "<option value='" + cat + "'>" + cat + "</option>";
+      })
+    }
+  })
+</script>
+
 <!-- Vendor JS Files -->
 <script src="assets/vendor/bootstrap/js/bootstrap.min.js"></script>
 
 <!-- Template Main JS File -->
-<script src="assets/js/main.js"></script>
+<script src="assets/vendor/aos/aos.js"></script>
+<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+<script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+<script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
+<script src="assets/vendor/php-email-form/validate.js"></script>
 
 </body>
 </html>
