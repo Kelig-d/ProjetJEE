@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Gestion des sites</title>
+  <meta charset="UTF-8">
+  <title>Jogenda</title>
 
 
   <!-- Favicons -->
@@ -41,49 +41,124 @@
 
   </div>
 </header><!-- End Header -->
-<section id="hero" class="d-flex align-items-center">
-  <button type="button" id="createSessionButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createSessionModal">
-    Ajouter un site
-  </button>
-</section>
-<!-- End Hero -->
 
+<section id="void"></section>
 <main id="main">
+  <div class="container">
+    <div class="title">
+      <h1>Sites Olympiques</h1>
+      <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#create">
+        Ajout site
+      </button>
+    </div>
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Nom</th>
+        <th scope="col">Ville</th>
+        <th scope="col">Catégorie</th>
+        <th scope="col">Modifier</th>
+        <th scope="col">Supprimer</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="site : ${site}">
+        <th th:text="${site.id_site}" scope="row"></th>
+        <td th:text="${site.nom}"></td>
+        <td th:text="${site.ville}"></td>
+        <td th:text="${site.categorie.nom}"></td>
+        <td>
+          <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#edited">
+            Modifier
+          </button>
+        </td>
+        <td>
+          <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#delete">
+            Supprimer
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+<!-- End #main -->
 
-</main><!-- End #main -->
-
-
-<div class="modal" tabindex="-1" id="createSessionModal">
+<!-- Modal Créer -->
+<div class="modal fade modal-lg" id="create" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-header text-center">
+        <h1 class="modal-title fs-5 col-12 " id="createLabel">Ajouter un site</h1>
       </div>
       <div class="modal-body">
-        <p>Modal body text goes here.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
+      <form action="/add_site" method="post">
+
+          <div class="mb-3">
+            <label for="nom" class="col-sm-3 col-form-label">Nom du site</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="nom" name="nameSite">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="ville" class="col-sm-3 col-form-label">Ville</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="ville" name="nameVille">
+            </div>
+          </div>
+
+
+          <fieldset class="mb-3">
+            <legend class="col-form-label col-sm-4 pt-0">Catégorie</legend>
+            <div class="col-sm-10">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="categorie" id="id_radio1" value="Stade" checked>
+                <label class="form-check-label" for="id_radio1">
+                  Stade
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="categorie" id="id_radio2" value="Salle de spectacle">
+                <label class="form-check-label" for="id_radio2">
+                  Salle de spectacle
+                </label>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="categorie" id="id_radio3" value="Lieu publique">
+                <label class="form-check-label" for="id_radio3">
+                  Lieu publique
+                </label>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="categorie" id="id_radio4" value="Centre aquatique">
+                <label class="form-check-label" for="id_radio4">
+                  Centre aquatique
+                </label>
+              </div>
+            </div>
+
+          </fieldset>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+          <button type="submit" class="btn btn-success">Valider</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
-<script>
-  const myModal = document.getElementById('createSessionModal')
-  const myInput = document.getElementById('createSessionButton')
+<!-- Fin Modal Créer -->
 
-  myModal.addEventListener('shown.bs.modal', async () => {
-    myInput.focus();
-    var test = await fetch('/createSessionData?data=TypeSession')
-              .then((response) => {
-                return response.text()
-              })
-    console.log(test);
-  })
+<!-- Modal Modifier-->
+<!-- Fin Modal Modifier -->
 
-</script>
+<!-- Modal Supprimer-->
+<!-- Fin Modal Supprimer -->
+
 <!-- Vendor JS Files -->
 <script src="assets/vendor/bootstrap/js/bootstrap.min.js"></script>
 
