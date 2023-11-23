@@ -130,6 +130,22 @@
         </tbody>
       </table>
     </div>
+    <nav aria-label="Page navigation example">
+      <div class = "col-sm-2">
+        Total discipline avec épreuves: [[${totalItems}]]
+      </div>
+      <ul class="pagination justify-content-center">
+        <li class="page-item" th:each="i: ${#numbers.sequence(1, totalPages)}">
+          <a class="page-link" th:if="${currentPage != i}" th:href="@{'/epreuve/' + ${i}}">[[${i}]]</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" th:if="${currentPage < totalPages}" th:href="@{'/epreuve/' + ${currentPage + 1}}">Suivant</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" th:if="${currentPage < totalPages}" th:href="@{'/epreuve/' + ${totalPages}}">Dernier</a>
+        </li>
+      </ul>
+    </nav>
   </div>
 </main>
 <!-- End #main -->
