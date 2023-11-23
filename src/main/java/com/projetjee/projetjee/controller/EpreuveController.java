@@ -7,6 +7,7 @@ import com.projetjee.projetjee.services.DisciplineService;
 import com.projetjee.projetjee.services.EpreuveService;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,10 +23,10 @@ public class EpreuveController {
     @Autowired private DisciplineService disciplineService;
 
     // Read all epreuve
+
     @GetMapping("/epreuve")
     public String showEpreuveList(Model model) {
-        model.addAttribute("epreuves", epreuveService.findAll());
-        return "epreuve";
+        return findPaginated(1,  model);
     }
 
     // Save Epreuve
@@ -57,6 +58,8 @@ public class EpreuveController {
         }
         if(session==null){
             epreuveService.deleteEpreuveById(id_epreuve);
+        }else{
+            throw new RuntimeException(" Vous ne pouvez pas supprimer cette épreuve");
         }
         return "redirect:/epreuve";
 
@@ -68,5 +71,19 @@ public class EpreuveController {
         JSONObject response = new JSONObject();
         response.put("disciplines", disciplineService.getAllNames());
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/epreuve/{pageNb}")
+    public String findPaginated(@PathVariable(value="pageNb") int pageNb, Model model ){
+        int pageSize = 10;
+        Page<Epreuve> page = epreuveService.findPaginated(pageNb,pageSize);
+        List<Epreuve> epreuves = page.getContent();
+        model.addAttribute("currentPage", pageNb);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+
+
+        model.addAttribute("epreuves", epreuves);
+        return "/epreuve";
     }
 }

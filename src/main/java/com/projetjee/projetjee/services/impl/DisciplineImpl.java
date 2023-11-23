@@ -1,9 +1,13 @@
 package com.projetjee.projetjee.services.cmf;
 
 import com.projetjee.projetjee.entities.Discipline;
+import com.projetjee.projetjee.entities.Epreuve;
 import com.projetjee.projetjee.repository.DisciplineRepository;
 import com.projetjee.projetjee.services.DisciplineService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
@@ -36,12 +40,6 @@ public class DisciplineImpl implements DisciplineService{
     @Override
     public List<Discipline> findAll(){
         return (List<Discipline>)disciplineRepository.findAll();
-    }
-
-    // Read Discipline with epreuve
-    @Override
-    public List<Discipline> findAllEpreuveDiscipline(){
-        return (List<Discipline>)disciplineRepository.findAllEpreuveDiscipline();
     }
 
     // Update Discipline
@@ -92,6 +90,18 @@ public class DisciplineImpl implements DisciplineService{
     @Override
     public Discipline getDisciplineById(Long id_discipline){
         return disciplineRepository.getDisciplineById(id_discipline);
+    }
+
+    @Override
+    public Page<Discipline> findPaginated(int pageNb, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNb-1,pageSize);
+        return this.disciplineRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Discipline> findPaginatedDsicEpr(int pageNb, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNb-1,pageSize);
+        return this.disciplineRepository.findAllEpreuveDiscipline(pageable);
     }
 
 }

@@ -11,24 +11,24 @@
 
   <!-- Favicons -->
   <link th:href="@{/assets/img/favicon.png}" rel="icon">
-  <link th:href="@{assets/img/apple-touch-icon.png}" rel="apple-touch-icon">
+  <link th:href="@{/assets/img/apple-touch-icon.png}" rel="apple-touch-icon">
 
 
   <!-- Vendor CSS Files -->
-  <link th:href="@{assets/vendor/aos/aos.css}" rel="stylesheet">
-  <link th:href="@{assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
-  <link th:href="@{assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
-  <link th:href="@{assets/vendor/boxicons/css/boxicons.min.css}" rel="stylesheet">
-  <link th:href="@{assets/vendor/glightbox/css/glightbox.min.css}" rel="stylesheet">
-  <link th:href="@{assets/vendor/remixicon/remixicon.css}" rel="stylesheet">
-  <link th:href="@{assets/vendor/swiper/swiper-bundle.min.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/aos/aos.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/boxicons/css/boxicons.min.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/glightbox/css/glightbox.min.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/remixicon/remixicon.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/swiper/swiper-bundle.min.css}" rel="stylesheet">
   <link href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css' rel='stylesheet'>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" ></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" ></script>
 
   <!-- Template Main CSS File -->
-  <link th:href="@{assets/css/style.css}" rel="stylesheet">
+  <link th:href="@{/assets/css/style.css}" rel="stylesheet">
 
 </head>
 
@@ -176,6 +176,22 @@
         </tr>
         </tbody>
       </table>
+      <nav aria-label="Page navigation example">
+        <div class = "col-sm-2">
+          Total discipline: [[${totalItems}]]
+        </div>
+        <ul class="pagination justify-content-center">
+          <li class="page-item" th:each="i: ${#numbers.sequence(1, totalPages)}">
+            <a class="page-link" th:if="${currentPage != i}" th:href="@{'/epreuve/' + ${i}}">[[${i}]]</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" th:if="${currentPage < totalPages}" th:href="@{'/epreuve/' + ${currentPage + 1}}">Suivant</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" th:if="${currentPage < totalPages}" th:href="@{'/epreuve/' + ${totalPages}}">Dernier</a>
+          </li>
+        </ul>
+      </nav>
     </div>
   </div>
 </main>
