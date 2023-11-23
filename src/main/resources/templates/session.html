@@ -170,38 +170,57 @@
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fermer</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
       </div>
       </div>
     </div>
   </div>
-</div>
-<script th:src="@{/assets/js/createSessionFormHandler.js}">
-
-</script>
+<script th:src="@{/assets/js/createSessionFormHandler.js}"></script>
 <!-- Vendor JS Files -->
 <script src="assets/vendor/bootstrap/js/bootstrap.min.js"></script>
 <script type="module">
-
+var data;
   fetch('/getSessions')
           .then(res => res.json())
           .then(res=>{
-            let data = JSON.parse(res["sessions"])
+            data = JSON.parse(res["sessions"])
             let table = document.getElementById("sessionTable")
             data.forEach((entry)=>{
-              console.log(entry)
               const dateDeb = new Date(entry.dateDebut[0],entry.dateDebut[1], entry.dateDebut[2], entry.dateDebut[3], entry.dateDebut[4]).toLocaleString();
               const dateFin = new Date(entry.dateFin[0],entry.dateFin[1], entry.dateFin[2], entry.dateFin[3], entry.dateFin[4]).toLocaleString();
               table.innerHTML +="    <tr>\n" +
                       "      <td>"+entry.code+"</td>\n" +
                       "      <td>"+entry.site.nom+"</td>\n" +
-                      "      <td>"+entry.epreuve.nom+"</td>\n" +
+                      "      <td>"+entry.epreuve.nom +" - "+entry.epreuve.discipline.nom+"</td>\n" +
                       "      <td>"+dateDeb+"</td>\n" +
                       "      <td>"+dateFin+"</td>\n" +
                       "      <td>"+entry.description+"</td>\n" +
                       "      <td>"+entry.type_session.nom+"</td>\n" +
+                      "      <td><button value="+entry.code+" type=\"button\" class=\"btn btn-primary updateBut\">Modifier</button></td>\n" +
                       "    </tr>"
+
             })
+            document.querySelectorAll(".updateBut").forEach(but=> {
+              but.addEventListener("click",async (event) => {
+                let entry = data.filter(obj => {
+                  return obj.code === event.target.value
+                })[0]
+
+                const eModal = new Event("shown.bs.modal", {bubbles: true, cancelable: false});
+                const echange = new Event("change", {bubbles: true, cancelable: false})
+                const eclick = new Event("click", {bubbles: true, cancelable: false})
+
+                createModal.dispatchEvent(eModal)
+                $("#createSessionModal").modal("show")
+
+                selDis.value = entry.epreuve.discipline.nom
+
+
+
+              })
+            });
+
+
           })
 </script>
 <!-- Template Main JS File -->

@@ -27,7 +27,7 @@ public class SessionImpl implements SessionService {
     @Override
     public String getCode(String discipline) {
         try {
-            String lc = sessionRepository.findFirstByOrderByCodeDesc().getCode().substring(3);
+            String lc = sessionRepository.findFirstByEpreuve_Discipline_NomOrderByCodeDesc(discipline).getCode().substring(3);
             String i = Integer.parseInt(lc) > 9 ? ""+(Integer.parseInt(lc)+1) : "0"+(Integer.parseInt(lc)+1);
             return discipline.substring(0,3) + i;
         }

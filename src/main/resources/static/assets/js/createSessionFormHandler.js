@@ -19,7 +19,7 @@ const nextBut = document.getElementById("next");
 const retBut = document.getElementById("ret");
 const formParts = Array.prototype.slice.call(document.getElementsByClassName("form-part"));
 const form = document.getElementById("creator");
-let activeForm = 0;
+var activeForm = 0;
 var dis = "";
 createModal.addEventListener('shown.bs.modal', async () => {
     myInput.focus();

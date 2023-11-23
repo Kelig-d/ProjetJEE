@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface SessionRepository extends JpaRepository<Session, Long> {
     <T>List<T> findAllBySite_Nom(String site, Class<T> tClass);
-    Session.Code findFirstByOrderByCodeDesc();
+    Session.Code findFirstByEpreuve_Discipline_NomOrderByCodeDesc(String dis);
 }
