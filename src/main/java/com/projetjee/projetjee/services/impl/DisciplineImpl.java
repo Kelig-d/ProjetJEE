@@ -14,6 +14,7 @@ public class DisciplineImpl implements DisciplineService{
 
     @Autowired
     private DisciplineRepository disciplineRepository;
+
     @Override
     public List<String> getAllNames() {
         return disciplineRepository.findAll().stream()
@@ -30,9 +31,17 @@ public class DisciplineImpl implements DisciplineService{
         return disciplineRepository.save(discipline);
     }
 
+    // Read Discipline
+    @Override
+    public List<Discipline> findAll(){
+        return (List<Discipline>)disciplineRepository.findAll();
+    }
+
     // Read Discipline with epreuve
     @Override
-    public List<Discipline> findAll(){return (List<Discipline>)disciplineRepository.findAllEpreuveDiscipline();}
+    public List<Discipline> findAllEpreuveDiscipline(){
+        return (List<Discipline>)disciplineRepository.findAllEpreuveDiscipline();
+    }
 
     // Update Discipline
     @Override
@@ -61,6 +70,20 @@ public class DisciplineImpl implements DisciplineService{
     public List<Discipline> getAll() {
         return disciplineRepository.findAll();
     }
+
+    @Override
+    public Discipline findDisciplineByNom(String nom){
+        return disciplineRepository.findDisciplineByNom(nom);
+    }
+
+    public List<String> getAllNames() {
+        return disciplineRepository.findAll().stream()
+                .map(Discipline::getNom).toList();
+    }
+
+    @Override
+    public Discipline getByNom(String nom) {
+        return disciplineRepository.findFirstByNom(nom);
+    }
+
 }
-
-

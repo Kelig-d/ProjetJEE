@@ -11,10 +11,19 @@ public interface DisciplineService {
 
     // Read Discipline with epreuve
     List<Discipline> findAll();
+
+    // Read Discipline with epreuve
+    List<Discipline> findAllEpreuveDiscipline();
     // Update Discipline
     Discipline updateDiscipline(Long id_discipline ,String nom ,Boolean paralympique);
     // Delete Discipline
     void deleteDisciplineById(Long id_discipline);
+
+    Discipline findDisciplineByNom(String nom);
+
+    List<String> getAllNames();
+
+    Discipline getByNom(String nom);
 
     List<Discipline> getAll();
 }
