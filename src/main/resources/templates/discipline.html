@@ -176,23 +176,23 @@
         </tr>
         </tbody>
       </table>
-      <nav aria-label="Page navigation example">
-        <div class = "col-sm-2">
-          Total discipline: [[${totalItems}]]
-        </div>
-        <ul class="pagination justify-content-center">
-          <li class="page-item" th:each="i: ${#numbers.sequence(1, totalPages)}">
-            <a class="page-link" th:if="${currentPage != i}" th:href="@{'/epreuve/' + ${i}}">[[${i}]]</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" th:if="${currentPage < totalPages}" th:href="@{'/epreuve/' + ${currentPage + 1}}">Suivant</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" th:if="${currentPage < totalPages}" th:href="@{'/epreuve/' + ${totalPages}}">Dernier</a>
-          </li>
-        </ul>
-      </nav>
     </div>
+    <nav aria-label="Page navigation example">
+      <div class = "col-sm-2">
+        Total discipline: [[${totalItems}]]
+      </div>
+      <ul class="pagination justify-content-center">
+        <li class="page-item" th:each="i: ${#numbers.sequence(1, totalPages)}">
+          <a class="page-link" th:if="${currentPage != i}" th:href="@{'/epreuve/' + ${i}}">[[${i}]]</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" th:if="${currentPage < totalPages}" th:href="@{'/epreuve/' + ${currentPage + 1}}">Suivant</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" th:if="${currentPage < totalPages}" th:href="@{'/epreuve/' + ${totalPages}}">Dernier</a>
+        </li>
+      </ul>
+    </nav>
   </div>
 </main>
 <!-- End #main -->
@@ -245,7 +245,7 @@
       BtnCreate.hidden=false;
     }
   }
-
+s
   function selectEdit(){
     const opt1 = document.getElementById("opt1");
     const opt2 = document.getElementById("opt2");
@@ -267,19 +267,19 @@
 </script>
 
 <!-- Vendor JS Files -->
-<script src="assets/vendor/aos/aos.js"></script>
-<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-<script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-<script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-<script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
-<script src="assets/vendor/php-email-form/validate.js"></script>
+<script src="/assets/vendor/aos/aos.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/glightbox/js/glightbox.min.js"></script>
+<script src="/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+<script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="/assets/vendor/waypoints/noframework.waypoints.js"></script>
+<script src="/assets/vendor/php-email-form/validate.js"></script>
 
 <!-- Vendor JS Files -->
-<script src="assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
 
 <!-- Template Main JS File -->
-<script src="assets/js/main.js"></script>
+<script src="/assets/js/main.js"></script>
 
 </body>
 
