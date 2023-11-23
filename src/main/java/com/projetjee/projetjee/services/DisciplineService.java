@@ -1,6 +1,8 @@
 package com.projetjee.projetjee.services;
 
 import com.projetjee.projetjee.entities.Discipline;
+import com.projetjee.projetjee.entities.Epreuve;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -11,9 +13,6 @@ public interface DisciplineService {
 
     //Read Discipline
     List<Discipline> findAll();
-
-    // Read Discipline with epreuve
-    List<Discipline> findAllEpreuveDiscipline();
 
     // Update Discipline
     Discipline updateDiscipline(Long id_discipline ,String nom ,Boolean paralympique);
@@ -26,5 +25,9 @@ public interface DisciplineService {
     Discipline getByNom(String nom);
 
     Discipline getDisciplineById(Long id_discipline);
+
+    Page<Discipline> findPaginated(int pageNb, int pageSize);
+
+    Page<Discipline> findPaginatedDsicEpr(int pageNb, int pageSize);
 }
 

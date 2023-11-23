@@ -5,6 +5,7 @@ import com.projetjee.projetjee.services.*;
 import lombok.val;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,8 +23,21 @@ public class DisciplineController {
     // Read all discipline
     @GetMapping("/discipline")
     public String showDisciplineList(Model model) {
-        model.addAttribute("disciplines", disciplineService.findAll());
-        return "discipline";
+        return findPaginated(1,  model);
+    }
+
+    @GetMapping("/discipline/{pageNb}")
+    public String findPaginated(@PathVariable(value="pageNb") int pageNb, Model model ){
+        int pageSize = 10;
+        Page<Discipline> page = disciplineService.findPaginated(pageNb,pageSize);
+        List<Discipline> disciplines = page.getContent();
+        model.addAttribute("currentPage", pageNb);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+
+
+        model.addAttribute("disciplines", disciplines);
+        return "/discipline";
     }
 
     // Save Discipline

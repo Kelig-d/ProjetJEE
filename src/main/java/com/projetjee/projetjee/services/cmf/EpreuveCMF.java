@@ -4,6 +4,8 @@ import com.projetjee.projetjee.entities.*;
 import com.projetjee.projetjee.repository.*;
 import com.projetjee.projetjee.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -67,6 +69,12 @@ public class EpreuveCMF implements EpreuveService {
     @Override
     public List<Epreuve> getEpreuveByDiscipline(Discipline discipline) {
         return epreuveRepository.getEpreuveByDiscipline(discipline);
+    }
+
+    @Override
+    public Page<Epreuve> findPaginated(int pageNb, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNb-1,pageSize);
+        return this.epreuveRepository.findAll(pageable);
     }
 
 }

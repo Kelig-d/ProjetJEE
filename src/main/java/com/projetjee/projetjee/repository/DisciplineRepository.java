@@ -1,6 +1,8 @@
 package com.projetjee.projetjee.repository;
 import com.projetjee.projetjee.entities.Discipline;
 import com.projetjee.projetjee.entities.Epreuve;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -18,7 +20,7 @@ public interface DisciplineRepository extends JpaRepository<Discipline, Long>, J
             "WHERE discipline.id_discipline=epreuve.id_discipline "+
             "GROUP BY discipline.id_discipline",
             nativeQuery = true)
-    List<Discipline> findAllEpreuveDiscipline();
+    Page<Discipline> findAllEpreuveDiscipline(Pageable pageable);
 
     Discipline findFirstByNom(String nom);
 

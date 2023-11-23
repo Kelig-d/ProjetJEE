@@ -4,6 +4,7 @@ import com.projetjee.projetjee.entities.*;
 import com.projetjee.projetjee.services.*;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,8 +22,21 @@ public class DisciplineEpreuveController {
     // Read discipline with epreuve
     @GetMapping("/disciplineEpreuve")
     public String showDisciplineEpreuveList(Model model) {
-        model.addAttribute("disciplines", disciplineService.findAllEpreuveDiscipline());
-        return "disciplineEpreuve";
+        return findPaginated(1,  model);
+    }
+
+    @GetMapping("/disciplineEpreuve/{pageNb}")
+    public String findPaginated(@PathVariable(value="pageNb") int pageNb, Model model ){
+        int pageSize = 10;
+        Page<Discipline> page = disciplineService.findPaginatedDsicEpr(pageNb,pageSize);
+        List<Discipline> disciplines = page.getContent();
+        model.addAttribute("currentPage", pageNb);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+
+
+        model.addAttribute("disciplines", disciplines);
+        return "/disciplineEpreuve";
     }
 
 

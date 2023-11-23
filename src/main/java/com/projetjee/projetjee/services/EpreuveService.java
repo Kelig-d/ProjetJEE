@@ -3,6 +3,7 @@ package com.projetjee.projetjee.services;
 import com.projetjee.projetjee.entities.Discipline;
 import com.projetjee.projetjee.entities.Epreuve;
 import com.projetjee.projetjee.entities.Session;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -25,5 +26,7 @@ public interface EpreuveService {
     List<Epreuve> getEpreuveById(Long id_epreuve);
 
     List<Epreuve> getEpreuveByDiscipline(Discipline discipline);
+
+    Page<Epreuve> findPaginated(int pageNb, int pageSize);
 
 }
