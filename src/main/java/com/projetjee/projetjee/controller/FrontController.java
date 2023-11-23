@@ -3,6 +3,7 @@ package com.projetjee.projetjee.controller;
 import com.projetjee.projetjee.entities.JWebToken;
 import com.projetjee.projetjee.entities.Utilisateur;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.security.NoSuchAlgorithmException;
 
@@ -22,11 +24,12 @@ import java.security.NoSuchAlgorithmException;
 public class FrontController {
 
 
-    @GetMapping("/")
+
+
+    @GetMapping("/index")
     public String homePage(){
         return "index";
     }
-
 
     @GetMapping("/discipline")
     public String disciplinePage(){
@@ -43,20 +46,21 @@ public class FrontController {
 
     @Autowired
     private com.projetjee.projetjee.repository.UtilsateurRepository UtilsateurRepository;
-    @GetMapping("/login")
-    public String greetingForm(Model model) {
-        System.out.println("Step 1");
-        //model.addAttribute("logStat", new Connexion());
+
+    @GetMapping({"/", "/login"})
+    public String greetingForm(@CookieValue(value="JWebToken", required=false) String bearerToken) {
+        if (bearerToken != null) {
+            if (verifToken(bearerToken)) return "index";
+        }
         return "login";
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody MultiValueMap<String,String> formData, HttpServletResponse response) throws JSONException {
-        System.out.println("Step 2");
+    public ModelAndView login(@RequestBody MultiValueMap<String,String> formData, HttpServletResponse response) throws JSONException {
         Utilisateur Utilisateur = new Utilisateur(formData.getFirst("login"),formData.getFirst("password"));
         boolean empty= UtilisateurImpl.login(Utilisateur);
         if(empty){
-            return new ResponseEntity<>("unauthorized", HttpStatus.UNAUTHORIZED);
+            return new ModelAndView("redirect:/login");
         }else{
             Utilisateur UtilisationVerify = UtilsateurRepository.findByLoginAndPassword(Utilisateur.getLogin(),Utilisateur.getPassword()).getFirst();
             String Token = UtilisateurImpl.generateToken(UtilisationVerify);
@@ -66,31 +70,32 @@ public class FrontController {
             JWebToken.setDomain("localhost");
             ResponseEntity<String> Response = new ResponseEntity<>("authorized", HttpStatus.OK);
             response.addCookie(JWebToken);
-            return Response;
+            return new ModelAndView("redirect:/index");
         }
     }
-    @PostMapping("/token")
-    public ResponseEntity<String> verifToken(@CookieValue("JWebToken") String bearerToken, HttpServletResponse response) throws NoSuchAlgorithmException, JSONException {
+
+    public Boolean verifToken(String bearerToken)  {
         JWebToken incomingToken = null;
         try {
             incomingToken = new JWebToken(bearerToken);
-        } catch (NoSuchAlgorithmException e) {
-            return new ResponseEntity<>("unauthorized", HttpStatus.UNAUTHORIZED);
-        }
+
         if (!incomingToken.isValid()) {
             //suppresion du token
-            return new ResponseEntity<>("unauthorized", HttpStatus.UNAUTHORIZED);
+            return false;
         }
         else {
             String privilege = incomingToken.getRole();
-            return new ResponseEntity<>(privilege, HttpStatus.OK);
+            return true;
+        }
+        } catch (Exception e) {
+            return false;
         }
     }
 
 
 
-    @PostMapping("/logout")
-    public ResponseEntity<String> logout(HttpServletResponse response) {
+    @GetMapping("/logout")
+    public String logout(HttpServletResponse response) {
         final Cookie JWebToken = new Cookie("JWebToken", "");
         JWebToken.setMaxAge(0);
         JWebToken.setHttpOnly(true);
@@ -98,7 +103,7 @@ public class FrontController {
         JWebToken.setDomain("localhost");
         ResponseEntity<String> Response = new ResponseEntity<>("logged out", HttpStatus.OK);
         response.addCookie(JWebToken);
-        return Response;
+        return "index";
     }
 
     @GetMapping("/test1")
