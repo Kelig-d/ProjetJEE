@@ -109,5 +109,4 @@ public class FrontController {
     public String disciplinePage(){
         return "discipline";
     }
-
 }
