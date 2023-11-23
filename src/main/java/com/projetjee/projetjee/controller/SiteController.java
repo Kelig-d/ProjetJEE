@@ -30,7 +30,7 @@ public class SiteController {
     @PostMapping("/add_site")
     public String saveSite(@RequestParam("nameSite") String name, @RequestParam("nameVille") String ville, @RequestParam("categorie") String categorie)
     {
-        Categorie cat = siteService.getByNom(categorie);
+        Categorie cat = new Categorie(categorie);
         System.out.println("Sauvegarde du site");
         siteService.saveSite(name,ville, cat);
         return "redirect:/site";
@@ -40,10 +40,8 @@ public class SiteController {
     @PostMapping("/edit_site")
     public String updateSite(@RequestParam("id_site") Long id_site, @RequestParam("nameSite") String name, @RequestParam("nameVille") String ville, @RequestParam("categorie") String categorie)
     {
-        Categorie cat = siteService.getByNom(categorie);
-        if(cat != null){
-            siteService.updateSite(id_site, name, ville, cat);
-        }
+        Categorie cat = new Categorie(categorie);
+        siteService.updateSite(id_site, name, ville, cat);
         return "redirect:/site";
     }
 

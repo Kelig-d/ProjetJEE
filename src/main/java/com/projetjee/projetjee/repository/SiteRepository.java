@@ -10,10 +10,6 @@ import java.util.List;
 
 public interface SiteRepository extends JpaRepository<Site, Long>
 {
-    @Query(value=" SELECT * "+
-            "FROM site",
-            nativeQuery = true)
-    List<Site> findAllSite();
 
 
     // Bon résultat
@@ -22,11 +18,7 @@ public interface SiteRepository extends JpaRepository<Site, Long>
             nativeQuery = true)
     List<String> getCategories();
 
-    @Query(value=" SELECT DISTINCT nom "+
-            "FROM categorie "+
-            "WHERE nom = :name ",
-            nativeQuery = true)
-    Categorie findCategorie(@Param("name") String nom);
+
     List<Site.SiteCategory> findAllProjectedBy();
     Site findFirstByNom(String nom);
 }

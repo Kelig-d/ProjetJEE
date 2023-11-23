@@ -13,8 +13,6 @@ public interface SiteService {
     Map<String,List<String>> getAllGroupByCategorie();
     Site getSiteByNom(String nom);
 
-public interface SiteService {
-
     // Save Site
     Site saveSite(String nom, String ville, Categorie categorie);
 
@@ -27,8 +25,6 @@ public interface SiteService {
 
     // Catégories
     List<String> getCategories();
-
-    Categorie getByNom(String nom);
 
 
 }

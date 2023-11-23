@@ -33,9 +33,9 @@ public class FrontController {
         return "discipline";
     }
 
-    @GetMapping("/site")
-    public String sitePage(){
-        return "site";
+    @GetMapping("/session")
+    public String sessionPage(){
+        return "session";
     }
 
     @Autowired
@@ -106,8 +106,4 @@ public class FrontController {
         return "test";
     }
 
-    @GetMapping("/discipline")
-    public String disciplinePage(){
-        return "discipline";
-    }
 }
