@@ -7,12 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+
 @Service
 public class DisciplineImpl implements DisciplineService{
+
     @Autowired
     private DisciplineRepository disciplineRepository;
     @Override
-    public List<Discipline> getAll() {
-        return disciplineRepository.findAll();
+    public List<String> getAllNames() {
+        return disciplineRepository.findAll().stream()
+                .map(Discipline::getNom).toList();
     }
+
 }

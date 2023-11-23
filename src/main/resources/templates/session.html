@@ -15,6 +15,19 @@
 
   <!-- Template Main CSS File -->
   <link th:href="@{assets/css/style.css}" rel="stylesheet">
+  <link th:href="@{assets/vendor/bootstrap-icons/bootstrap-icons.min.css}" rel="stylesheet">
+
+  <link href=
+                'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css'
+        rel='stylesheet'>
+
+  <script src=
+                  "https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" >
+  </script>
+
+  <script src=
+                  "https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" >
+  </script>
 
 
 </head>
@@ -55,52 +68,127 @@
 
   </div>
 </header><!-- End Header -->
-<section id="hero" class="d-flex align-items-center">
-  <button type="button" id="createSessionButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createSessionModal">
-    Créer une session
-  </button>
+
+<section id="hero" class="d-flex align-items-center text-centered">
+  <table class="table table-striped m-5 overflow-hidden rounded-3 ">
+    <thead>
+    <tr>
+      <th class="p-3" >Code</th>
+      <th class="p-3">Site</th>
+      <th class="p-3">Épreuve</th>
+      <th class="p-3">Date de début</th>
+      <th class="p-3">Date de fin</th>
+      <th class="p-3">Description</th>
+      <th class="p-3">Type de session</th>
+      <th class="p-3">Actions</th>
+    </tr>
+    </thead>
+    <tbody id="sessionTable">
+    </tbody>
+  </table>
+
 </section>
+
 <!-- End Hero -->
 
 <main id="main">
 
+  <button type="button" id="createSessionButton" value="create" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createSessionModal">
+    Créer une session
+  </button>
 </main><!-- End #main -->
 
 
-<div class="modal" tabindex="-1" id="createSessionModal">
+<div class="modal fade" tabindex="-1" id="createSessionModal">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title">Créer une session</h5>
       </div>
       <div class="modal-body">
-        <p>Modal body text goes here.</p>
+        <form id="creator" method="post" th:action="@{/createSession}">
+        <fieldset class ="form-part">
+          <label for="selectDiscipline">Discipline</label><select name="discipline" class="form-select" id="selectDiscipline">
+              <option value='' disabled selected hidden>En chargement des disciplines</option>
+            </select>
+            <fieldSet id="selEpreuveBox" hidden>
+              <label for="selectEpreuve">Epreuve</label><select name="epreuve" class="form-select" id="selectEpreuve">
+              </select>
+            </fieldSet>
+        </fieldset>
+
+        <fieldset class ="form-part" hidden>
+          <label for="selCat">Catégorie du site</label><select name="categorie" class="form-select" id="selCat">
+              <option value='' disabled selected hidden>En chargement des catégories</option>
+            </select>
+            <fieldset id="selSiteBox" hidden>
+              <label for="selSite">Site</label><select name="site" class="form-select" id="selSite">
+                <option value='' disabled selected hidden>En chargement des sites</option>
+              </select>
+            </fieldset>
+        </fieldset>
+
+        <fieldset class ="form-part input-group" hidden>
+          <label for="startDate">Date de la session</label><input name="startDate" id="startDate"/>
+          <span class="input-group-text">
+            <i class="bi bi-calendar3"></i>
+          </span>
+          <fieldset hidden id="startTimeBox">
+            <label for="startTime">Heure de début</label><select name="startTime" class="form-select" id="startTime"></select>
+          </fieldset>
+          <fieldset hidden id="endTimeBox">
+            <label for="endTime">Heure de fin</label><select name="endTime" class="form-select" id="endTime"></select>
+          </fieldset>
+        </fieldset>
+
+          <fieldset class="form-part" hidden>
+            <label for="sessionType">Type de session</label><select name="typeSession" class="form-select" id="sessionType">
+                <option value='' disabled selected hidden>Type de session</option>
+            </select>
+
+            <label for="sessionDescription">Description</label>
+            <textarea  name="desc" rows="4" cols="50" class="form-control" id="sessionDescription" placeholder="Description de la session"></textarea>
+
+          </fieldset>
+
+        </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="cancel">Annuler</button>
+        <button type="button" class="btn btn-secondary" id="ret" hidden>Retour</button>
+        <button type="button" class="btn btn-primary" id="next" form="creator" disabled>Suivant</button>
       </div>
     </div>
   </div>
 </div>
-<script>
-  const myModal = document.getElementById('createSessionModal')
-  const myInput = document.getElementById('createSessionButton')
+<div class="modal fade" tabindex="-1" id="alertModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Réponse</h5>
+      </div>
+      <div class="modal-body" id="alertMessage">
 
-  myModal.addEventListener('shown.bs.modal', async () => {
-    myInput.focus();
-    var test = await fetch('/createSessionData?data=TypeSession')
-              .then((response) => {
-                return response.text()
-              })
-    console.log(test);
-  })
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+      </div>
+      </div>
+    </div>
+  </div>
+<script th:src="@{/assets/js/loadData.js}"></script>
+<script th:src="@{/assets/js/createSessionFormHandler.js}"></script>
 
-</script>
 <!-- Vendor JS Files -->
 <script src="assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script type="module">
+await loadSession();
 
+createButtonListeners();
+
+
+
+</script>
 <!-- Template Main JS File -->
 <script src="assets/js/main.js"></script>
 
