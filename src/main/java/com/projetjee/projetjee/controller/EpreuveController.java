@@ -58,8 +58,6 @@ public class EpreuveController {
         }
         if(session==null){
             epreuveService.deleteEpreuveById(id_epreuve);
-        }else{
-            throw new RuntimeException(" Vous ne pouvez pas supprimer cette épreuve");
         }
         return "redirect:/epreuve";
 
