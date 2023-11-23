@@ -130,7 +130,7 @@
                       <fieldset class="row mb-3">
                         <legend class="col-sm-5 col-form-label">Présente au Paralympique ?</legend>
                         <div class="col-sm-7">
-                          <select class="form-select" id="selPara" name="paralympique" onclick="selectEdit()">
+                          <select class="form-select" id="selPara" name="paralympique">
                             <option id="opt1" th:value="*{discipline.paralympique}"  th:label="*{discipline.paralympique}"></option>
                             <option id="opt2" value="" label=""></option>
                           </select>
@@ -245,20 +245,30 @@
       BtnCreate.hidden=false;
     }
   }
-s
+
+  selectEdit();
+
   function selectEdit(){
-    const opt1 = document.getElementById("opt1");
-    const opt2 = document.getElementById("opt2");
-    const opt1value = document.getElementById("opt1").value;
-    if(opt1value==="true"){
-      opt2.value="false";
-      opt2.label="non";
-      opt1.label="oui";
-    }else{
-      opt2.value="true";
-      opt2.label="oui";
-      opt1.label="non";
-    }
+     opt1 = document.getElementById("opt1");
+     opt2 = document.getElementById("opt2");
+     opt1value = document.getElementById("opt1").value;
+     while(opt1!=null){
+       if(opt1value==="true"){
+         opt2.value="false";
+         opt2.label="non";
+         opt1.label="oui";
+       }else{
+         opt2.value="true";
+         opt2.label="oui";
+         opt1.label="non";
+       }
+       opt1.id="opt1done";
+       opt2.id="opt2done";
+       opt1value.id="opt1valuedone";
+       opt1 = document.getElementById("opt1");
+       opt2 = document.getElementById("opt2");
+       opt1value = document.getElementById("opt1").value;
+     }
   }
   ModalCreate.addEventListener('shown.bs.modal', async ()=> {
     getVal();
