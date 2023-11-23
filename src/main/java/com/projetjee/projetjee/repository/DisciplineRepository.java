@@ -19,4 +19,8 @@ public interface DisciplineRepository extends JpaRepository<Discipline, Long>, J
             nativeQuery = true)
     List<Discipline> findAllEpreuveDiscipline();
 
+    Discipline findDisciplineByNom(String nom);
+
+    Discipline findFirstByNom(String nom);
+
 }

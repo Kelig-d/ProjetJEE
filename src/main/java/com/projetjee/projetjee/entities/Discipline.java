@@ -4,12 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "Discipline")
-
 public class Discipline {
 
     @Id
@@ -20,6 +21,9 @@ public class Discipline {
 
     @Column(name = "name_epreuve",insertable = false,updatable = false)
     private String name_epreuve;
+
+    @OneToMany(mappedBy = "discipline", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Epreuve> epreuves;
 
     public Long getId_discipline() {
         return id_discipline;
