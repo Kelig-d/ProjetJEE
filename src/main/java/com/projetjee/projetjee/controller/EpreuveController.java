@@ -17,14 +17,14 @@ public class EpreuveController {
     @Autowired private EpreuveService epreuveService;
     @Autowired private DisciplineService disciplineService;
 
+    // Read all epreuve
     @GetMapping("/epreuve")
     public String showEpreuveList(Model model) {
         model.addAttribute("epreuves", epreuveService.findAll());
         return "epreuve";
     }
 
-    // create new discipline
-    // Save Discipline
+    // Save Epreuve
     @PostMapping("/epreuve/addEpreuve")
     public String saveEpreuve(@RequestParam("nameEpreuve") String name,@RequestParam("choixdis") String discipline)
     {
@@ -35,13 +35,14 @@ public class EpreuveController {
 
     // Update discipline
     @PostMapping("/epreuve/editEpreuve")
-    public String updateEpreuve(@RequestParam("id_epreuve") Long id_epreuve, @RequestParam("nameEpreuve") String name,@RequestParam("discipline") Discipline id_discipline)
+    public String updateEpreuve(@RequestParam("id_epreuve") Long id_epreuve, @RequestParam("nameEpreuve") String name,@RequestParam("nameDiscipline") String discipline)
     {
-        epreuveService.updateEpreuve(id_epreuve, name,id_discipline);
+        Discipline dis = disciplineService.getByNom(discipline);
+        epreuveService.updateEpreuve(id_epreuve, name,dis);
         return "redirect:/epreuve";
     }
 
-    // Delete discipline with epreuve
+    // Delete epreuve
     @GetMapping("/epreuve/delete/{id}")
     public String deleteEpreuveById(@PathVariable("id") Long id_epreuve)
     {
@@ -50,7 +51,7 @@ public class EpreuveController {
     }
 
     @ResponseBody
-    @GetMapping("/epreuve/createSessionDisciplines")
+    @GetMapping("/epreuve/disciplines")
     public ResponseEntity<JSONObject> sendCreateSessionDisciplines() {
         JSONObject response = new JSONObject();
         response.put("disciplines", disciplineService.getAllNames());

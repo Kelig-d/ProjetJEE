@@ -6,11 +6,8 @@ import com.projetjee.projetjee.entities.Epreuve;
 import java.util.List;
 
 public interface EpreuveService {
-    // Read Discipline with epreuve
-    List<Epreuve> findAllEpreuveByDiscipline(Long id);
-    List<String> getByDiscipline(String discipline);
 
-    //Read Discipline
+    //Read Epreuve
     List<Epreuve> findAll();
 
     // Update Epreuve

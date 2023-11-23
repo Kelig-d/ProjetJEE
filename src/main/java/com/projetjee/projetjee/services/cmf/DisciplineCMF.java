@@ -46,8 +46,9 @@ public class DisciplineCMF implements DisciplineService{
         if (Objects.nonNull(discipline.getNom()) && !"".equalsIgnoreCase(nom)) {
             discipline.setNom(nom);
         }
-
-        discipline.setParalympique(paralympique);
+        if (Objects.nonNull(discipline.getParalympique()) && !"".equalsIgnoreCase(paralympique.toString())) {
+            discipline.setParalympique(paralympique);
+        }
 
         return disciplineRepository.save(discipline);
     }
@@ -60,10 +61,6 @@ public class DisciplineCMF implements DisciplineService{
     }
 
     @Override
-    public Discipline findDisciplineByNom(String nom){
-        return disciplineRepository.findDisciplineByNom(nom);
-    }
-
     public List<String> getAllNames() {
         return disciplineRepository.findAll().stream()
                 .map(Discipline::getNom).toList();

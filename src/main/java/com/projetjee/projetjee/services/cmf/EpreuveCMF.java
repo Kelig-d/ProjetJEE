@@ -15,17 +15,6 @@ public class EpreuveCMF implements EpreuveService {
     @Autowired
     private EpreuveRepository epreuveRepository;
 
-    @Override
-    public List<Epreuve> findAllEpreuveByDiscipline(Long id){
-        return (List<Epreuve>)epreuveRepository.findAllEpreuveByIdDiscipline(id);
-    }
-
-    @Override
-    public List<String> getByDiscipline(String nom){
-        return epreuveRepository.findAllByDiscipline_Nom(nom).stream()
-                .map(Epreuve.Nom::getNom).toList();
-    }
-
     // Read Epreuve
     @Override
     public List<Epreuve> findAll(){

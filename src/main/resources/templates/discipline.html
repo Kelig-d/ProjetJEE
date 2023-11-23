@@ -100,11 +100,11 @@
         </thead>
         <tbody>
         <tr th:each="discipline : ${disciplines}">
-          <td> [[*{discipline.nom}]] </td>
+          <td>[[*{discipline.nom}]]</td>
           <td>[[*{discipline.paralympique}]]</td>
           <td>
-            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" th:attr="data-bs-target='#editedDiscipline'+*{discipline.id_discipline}">
-              Modifier Discipline
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" th:attr="data-bs-target='#editedDiscipline'+*{discipline.id_discipline}" >
+              Modifier
             </button>
             <!-- Modal Modifier Discipline-->
             <div class="modal fade modal-lg" th:id="*{'editedDiscipline'+{discipline.id_discipline}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="edited" aria-hidden="true">
@@ -118,7 +118,7 @@
                       <div class="row mb-3">
                         <label class="col-sm-3 col-form-label">ID discipline</label>
                         <div class="col-sm-9">
-                          <input type="text" class="form-control-plaintext" name="id_discipline" id="id_discipline" th:value="*{discipline.id_discipline}">
+                          <input type="text" class="form-control-plaintext" name="id_discipline" id="id_discipline" th:value="*{discipline.id_discipline}" readonly="readonly">
                         </div>
                       </div>
                       <div class="row mb-3">
@@ -130,7 +130,10 @@
                       <fieldset class="row mb-3">
                         <legend class="col-sm-5 col-form-label">Présente au Paralympique ?</legend>
                         <div class="col-sm-7">
-                          <input class="form-check-input" type="checkbox" name="paralympique"  th:value="*{discipline.paralympique}">
+                          <select class="form-select" id="selPara" name="paralympique" onclick="selectEdit()">
+                            <option id="opt1" th:value="*{discipline.paralympique}"  th:label="*{discipline.paralympique}"></option>
+                            <option id="opt2" value="" label=""></option>
+                          </select>
                         </div>
                       </fieldset>
                     </div>
@@ -190,36 +193,62 @@
             <div class="row mb-3">
               <label for="nomDiscipline" class="col-sm-3 col-form-label">Nom de la discipline</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="nomDiscipline" name="nameDiscipline" value="">
+                <input type="text" class="form-control" id="nomDiscipline" name="nameDiscipline" onblur="getVal()" >
               </div>
             </div>
-            <fieldset class="row mb-3">
-              <legend class="col-form-label col-sm-4 pt-0">Présente au Paralympique ?</legend>
-              <div class="col-sm-10">
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="oui" checked>
-                  <label class="form-check-label" for="gridRadios1">
-                    Oui
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="non">
-                  <label class="form-check-label" for="gridRadios2">
-                    Non
-                  </label>
-                </div>
-              </div>
-            </fieldset>
+          <fieldset class="row mb-3">
+            <legend class="col-sm-5 col-form-label">Présente au Paralympique ?</legend>
+            <div class="col-sm-7">
+              <select class="form-select" th:name="paralympique" id="optionPara" onblur="getVal()">
+                <option value="">Choisissez votre réponse</option>
+                <option value="true">oui</option>
+                <option value="false">non</option>
+              </select>
+            </div>
+          </fieldset>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-          <button type="submit" class="btn btn-success" >Valider</button>
+          <button type="submit" class="btn btn-success" id="BtnCreate" hidden="true">Valider</button>
         </div>
       </form>
     </div>
   </div>
 </div>
 <!-- Fin Modal Créer -->
+
+<script>
+  const ModalCreate = document.getElementById('createDiscipline');
+  const BtnCreate = document.getElementById("BtnCreate");
+  function getVal() {
+    const para = document.getElementById("optionPara").value;
+    const disc = document.getElementById("nomDiscipline").value;
+    if(disc==="" || para==="") {
+      BtnCreate.hidden = true;
+    }else{
+      BtnCreate.hidden=false;
+    }
+  }
+
+  function selectEdit(){
+    const opt1 = document.getElementById("opt1");
+    const opt2 = document.getElementById("opt2");
+    const opt1value = document.getElementById("opt1").value;
+    if(opt1value==="true"){
+      opt2.value="false";
+      opt2.label="non";
+      opt1.label="oui";
+    }else{
+      opt2.value="true";
+      opt2.label="oui";
+      opt1.label="non";
+    }
+  }
+  ModalCreate.addEventListener('shown.bs.modal', async ()=> {
+    getVal();
+  })
+
+</script>
 
 <!-- Vendor JS Files -->
 <script src="assets/vendor/aos/aos.js"></script>

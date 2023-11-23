@@ -2,6 +2,7 @@ package com.projetjee.projetjee.controller;
 
 import com.projetjee.projetjee.entities.*;
 import com.projetjee.projetjee.services.*;
+import lombok.val;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,26 +18,27 @@ public class DisciplineController {
 
     @Autowired private DisciplineService disciplineService;
 
+    // Read all discipline
     @GetMapping("/discipline")
     public String showDisciplineList(Model model) {
         model.addAttribute("disciplines", disciplineService.findAll());
         return "discipline";
     }
 
-    // create new discipline
     // Save Discipline
     @PostMapping("/discipline/addDiscipline")
-    public String saveDiscipline(@RequestParam("nameDiscipline") String name)
+    public String saveDiscipline(@RequestParam(value = "nameDiscipline") String name,@RequestParam("paralympique") Boolean para)
     {
-        disciplineService.saveDiscipline(name,true);
+        disciplineService.saveDiscipline(name, para);
         return "redirect:/discipline";
+
     }
 
     // Update discipline
-    @PostMapping("/discipline/editDiscipline")
-    public String updateDiscipline(@RequestParam("id_discipline") Long id_discipline, @RequestParam("nameDiscipline") String name)
+    @PostMapping("/discipline/editdiscipline")
+    public String updateDiscipline(@RequestParam("id_discipline") Long id_discipline, @RequestParam("nameDiscipline") String name,@RequestParam("paralympique") Boolean para)
     {
-        disciplineService.updateDiscipline(id_discipline, name,true);
+        disciplineService.updateDiscipline(id_discipline, name,para);
         return "redirect:/discipline";
     }
 
