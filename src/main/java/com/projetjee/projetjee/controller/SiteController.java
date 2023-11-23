@@ -38,9 +38,12 @@ public class SiteController {
 
     // Update operation
     @PostMapping("/edit_site")
-    public String updateSite(@RequestParam("id_site") Long id_site, @RequestParam("nameSite") String name, @RequestParam("nameVille") String ville, @RequestParam("categorie") Categorie categorie)
+    public String updateSite(@RequestParam("id_site") Long id_site, @RequestParam("nameSite") String name, @RequestParam("nameVille") String ville, @RequestParam("categorie") String categorie)
     {
-        siteService.updateSite(id_site, name, ville, categorie);
+        Categorie cat = siteService.getByNom(categorie);
+        if(cat != null){
+            siteService.updateSite(id_site, name, ville, cat);
+        }
         return "redirect:/site";
     }
 

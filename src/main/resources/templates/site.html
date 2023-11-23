@@ -69,9 +69,56 @@
         <td th:text="${site.ville}"></td>
         <td th:text="${site.categorie.nom}"></td>
         <td>
-          <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#edited">
+          <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" th:attr="data-bs-target='#editedSite'+*{site.id_site}">
             Modifier
           </button>
+
+          <!-- Modal Modifier-->
+          <div class="modal fade modal-lg" th:id="'editedSite' + ${site.id_site}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="edited" aria-hidden="true">
+
+          <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header text-center">
+                  <h1 class="modal-title fs-5 col-12 " id="edited">Modifier Site</h1>
+                </div>
+                <form action="/edit_site" method="post">
+                  <div class="modal-body">
+                    <div class="row mb-3">
+                      <label class="col-sm-3 col-form-label">ID Site</label>
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control-plaintext" name="id_site" th:value="*{site.id_site}">
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="nameSi" class="col-sm-3 col-form-label">Nom du site</label>
+                      <div class="col-sm-9">
+                        <input id="nameSi" type="text" class="form-control" name="nameSite" th:value="*{site.nom}">
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="nameVi" class="col-sm-3 col-form-label">Ville</label>
+                      <div class="col-sm-9">
+                        <input id="nameVi" type="text" class="form-control" name="nameVille" th:value="*{site.ville} ">
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="modCat" class="col-sm-3 col-form-label">Catégorie</label>
+                      <div class="col-sm-9">
+                        <input id="modCat" type="text" class="form-control" name="categorie" th:value="*{site.categorie.nom} ">
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Valider</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- Fin Modal Modifier -->
+
         </td>
         <td>
           <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#delete">
@@ -90,7 +137,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h1 class="modal-title fs-5 col-12 " id="createLabel">Ajouter une discipline</h1>
+        <h1 class="modal-title fs-5 col-12 " id="createLabel">Ajouter un site</h1>
       </div>
       <form id="formSite" action="/add_site" method="post">
         <div class="modal-body">
@@ -124,20 +171,17 @@
 </div>
 <!-- Fin Modal Créer -->
 
-<!-- Modal Modifier-->
-<!-- Fin Modal Modifier -->
-
 <!-- Modal Supprimer-->
 <!-- Fin Modal Supprimer -->
 
 <!-- Script  -->
 
 <script>
-  const myModal = document.getElementById('createSite');
+  const myModaladd = document.getElementById('createSite');
   const selCat = document.getElementById("selCat");
   var cat = "";
   var response = "";
-  myModal.addEventListener('shown.bs.modal', async () => {
+  myModaladd.addEventListener('shown.bs.modal', async () => {
     if(!cat) {
       response = await fetch('/createSessionCategorie')
               .then((res) => {
@@ -150,6 +194,7 @@
       })
     }
   })
+
 </script>
 
 <!-- Vendor JS Files -->
