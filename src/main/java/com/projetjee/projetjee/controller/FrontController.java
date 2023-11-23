@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
+
+import static com.projetjee.projetjee.services.securityUtils.verifToken;
 
 @Controller
 public class FrontController {
@@ -27,18 +30,35 @@ public class FrontController {
 
 
     @GetMapping("/index")
-    public String homePage(){
-        return "index";
+    public String homePage(@CookieValue(value="JWebToken", required=false) String bearerToken){
+        if (bearerToken != null) {
+            if (verifToken(bearerToken, "")) return "index";
+        }
+        return "login";
     }
 
     @GetMapping("/discipline")
-    public String disciplinePage(){
-        return "discipline";
+    public String disciplinePage(@CookieValue(value="JWebToken", required=false)String bearerToken){
+        if (bearerToken != null) {
+            if (verifToken(bearerToken, "administratif")){
+
+                return "discipline";
+            }
+            else return "/index";
+        }
+        return "login";
     }
 
     @GetMapping("/session")
-    public String sessionPage(){
-        return "session";
+    public String sessionPage(@CookieValue(value="JWebToken", required=false) String bearerToken){
+        if (bearerToken != null) {
+            if (verifToken(bearerToken, "session")){
+
+                return "session";
+            }
+            else return "/index";
+        }
+        return "login";
     }
 
     @Autowired
@@ -50,7 +70,7 @@ public class FrontController {
     @GetMapping({"/", "/login"})
     public String greetingForm(@CookieValue(value="JWebToken", required=false) String bearerToken) {
         if (bearerToken != null) {
-            if (verifToken(bearerToken)) return "index";
+            if (verifToken(bearerToken, "")) return "index";
         }
         return "login";
     }
@@ -74,28 +94,11 @@ public class FrontController {
         }
     }
 
-    public Boolean verifToken(String bearerToken)  {
-        JWebToken incomingToken = null;
-        try {
-            incomingToken = new JWebToken(bearerToken);
-
-        if (!incomingToken.isValid()) {
-            //suppresion du token
-            return false;
-        }
-        else {
-            String privilege = incomingToken.getRole();
-            return true;
-        }
-        } catch (Exception e) {
-            return false;
-        }
-    }
 
 
 
     @GetMapping("/logout")
-    public String logout(HttpServletResponse response) {
+    public ModelAndView logout(HttpServletResponse response) {
         final Cookie JWebToken = new Cookie("JWebToken", "");
         JWebToken.setMaxAge(0);
         JWebToken.setHttpOnly(true);
@@ -103,12 +106,8 @@ public class FrontController {
         JWebToken.setDomain("localhost");
         ResponseEntity<String> Response = new ResponseEntity<>("logged out", HttpStatus.OK);
         response.addCookie(JWebToken);
-        return "index";
+        return new ModelAndView("redirect:/login");
     }
 
-    @GetMapping("/test1")
-    public String test(){
-        return "test";
-    }
 
 }
