@@ -17,6 +17,7 @@ import java.util.List;
 public class DisciplineController {
 
     @Autowired private DisciplineService disciplineService;
+    @Autowired private EpreuveService epreuveService;
 
     // Read all discipline
     @GetMapping("/discipline")
@@ -46,7 +47,19 @@ public class DisciplineController {
     @GetMapping("/discipline/delete/{id}")
     public String deleteDisciplineById(@PathVariable("id") Long id_discipline)
     {
-        disciplineService.deleteDisciplineById(id_discipline);
+        String present=null;
+        Discipline dis = disciplineService.getDisciplineById(id_discipline);
+        List<Epreuve> epreuvelist = epreuveService.getEpreuveByDiscipline(dis);
+        Session  session = new Session();
+        for (Epreuve epreuve : epreuvelist) {
+            session = epreuveService.getSessionsByEpreuve(epreuve);
+            if(session!=null){
+                present="present";
+            }
+        }
+        if (present == null) {
+            disciplineService.deleteDisciplineById(id_discipline);
+        }
         return "redirect:/discipline";
     }
 }

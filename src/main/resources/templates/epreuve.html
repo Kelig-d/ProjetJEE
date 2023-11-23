@@ -163,7 +163,7 @@
                   <div class="modal-footer-delete">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
                     <a th:href="@{/epreuve/delete/{id}(id=${epreuve.id_epreuve})}"
-                       class="btn btn-danger">delete</a>
+                       class="btn btn-danger">Supprimer</a>
                   </div>
                 </div>
               </div>
@@ -190,13 +190,13 @@
           <div class="row mb-3">
             <label for="nameEpr" class="col-sm-3 col-form-label">Nom de l'épreuve</label>
             <div class="col-sm-9">
-              <input id="nameEpr" type="text" class="form-control" name="nameEpreuve">
+              <input id="nameEpr" type="text" class="form-control" name="nameEpreuve" onblur="getVal()">
             </div>
           </div>
           <div class="row mb-3">
             <label for="selDis" class="col-sm-3 col-form-label">Nom de la discipline</label>
             <div class="col-sm-9">
-              <select class="form-select" id="selDis" name="choixdis">
+              <select class="form-select" id="selDis" name="choixdis" onblur="getVal()">
               </select>
             </div>
           </div>
@@ -218,20 +218,6 @@
 
   var dis = "";
 
-  myModal.addEventListener('shown.bs.modal', async () => {
-    if(!dis) {
-      var response = await fetch('/epreuve/disciplines')
-              .then((res) => {
-                selDis.innerHTML = "<option value='' disabled selected hidden>Choisissez une discipline</option>";
-                return res.json()
-              })
-      response.disciplines.forEach((dis) => {
-        selDis.innerHTML += "<option value='" + dis + "'>" + dis + "</option>";
-      })
-    }
-    getVal();
-  })
-
   function getVal() {
     const name = document.getElementById("nameEpr").value;
     const dis = document.getElementById("selDis").value;
@@ -242,9 +228,20 @@
     }
   }
 
-  ModalCreate.addEventListener('shown.bs.modal', async ()=> {
+  myModal.addEventListener('shown.bs.modal', async () => {
     getVal();
+    if(!dis) {
+      var response = await fetch('/epreuve/disciplines')
+              .then((res) => {
+                selDis.innerHTML = "<option value='' disabled selected hidden>Choisissez une discipline</option>";
+                return res.json()
+              })
+      response.disciplines.forEach((dis) => {
+        selDis.innerHTML += "<option value='" + dis + "'>" + dis + "</option>";
+      })
+    }
   })
+
 </script>
 
 <!-- Vendor JS Files -->
