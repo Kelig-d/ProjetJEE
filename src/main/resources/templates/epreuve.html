@@ -118,7 +118,7 @@
                       <div class="row mb-3">
                         <label class="col-sm-3 col-form-label">ID épreuve</label>
                         <div class="col-sm-9">
-                          <input type="text" class="form-control-plaintext" name="id_epreuve" th:value="*{epreuve.id_epreuve}">
+                          <input type="text" class="form-control-plaintext" name="id_epreuve" th:value="*{epreuve.id_epreuve}" readonly="readonly">
                         </div>
                       </div>
                       <div class="row mb-3">
@@ -130,7 +130,7 @@
                       <div class="row mb-3">
                         <label for="nameDis" class="col-sm-3 col-form-label">Nom de la discipline</label>
                         <div class="col-sm-9">
-                          <input id="nameDis" type="text" class="form-control" name="nameDiscipline" th:value="*{epreuve.discipline.nom} ">
+                          <input id="nameDis" type="text" class="form-control" name="nameDiscipline" th:value="*{epreuve.discipline.nom} " readonly="readonly">
                         </div>
                       </div>
                     </div>
@@ -203,7 +203,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-          <button type="submit" class="btn btn-success" >Valider</button>
+          <button type="submit" class="btn btn-success" id="BtnCreateEpreuve" hidden="true">Valider</button>
         </div>
       </form>
     </div>
@@ -214,10 +214,13 @@
 <script>
   const myModal = document.getElementById('createEpreuve');
   const selDis = document.getElementById("selDis");
+  const BtnCreate = document.getElementById("BtnCreateEpreuve");
+
   var dis = "";
+
   myModal.addEventListener('shown.bs.modal', async () => {
     if(!dis) {
-      var response = await fetch('/epreuve/createSessionDisciplines')
+      var response = await fetch('/epreuve/disciplines')
               .then((res) => {
                 selDis.innerHTML = "<option value='' disabled selected hidden>Choisissez une discipline</option>";
                 return res.json()
@@ -226,6 +229,21 @@
         selDis.innerHTML += "<option value='" + dis + "'>" + dis + "</option>";
       })
     }
+    getVal();
+  })
+
+  function getVal() {
+    const name = document.getElementById("nameEpr").value;
+    const dis = document.getElementById("selDis").value;
+    if(name==="" || dis==="") {
+      BtnCreate.hidden = true;
+    }else{
+      BtnCreate.hidden=false;
+    }
+  }
+
+  ModalCreate.addEventListener('shown.bs.modal', async ()=> {
+    getVal();
   })
 </script>
 

@@ -84,9 +84,6 @@
   <div class="container">
     <div class="title">
       <h1>Disciplines et épreuves Olympiques</h1>
-      <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#createDisciplineEpreuve">
-        Nouvelle discipline
-      </button>
     </div>
     <div>
       <table class="table">
@@ -96,8 +93,6 @@
           <th scope="col">Discipline</th>
           <th scope="col">Épreuves</th>
           <th scope="col">Paralympique</th>
-          <th scope="col">Modifier discipline</th>
-          <th scope="col">Modifier épreuves</th>
           <th scope="col">Supprimer</th>
         </tr>
         </thead>
@@ -107,110 +102,6 @@
           <td> [[*{discipline.nom}]] </td>
           <td> [[*{discipline.name_epreuve}]] </td>
           <td>[[*{discipline.paralympique}]]</td>
-          <td>
-            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" th:attr="data-bs-target='#editedDiscipline'+*{discipline.id_discipline}">
-              Modifier Discipline
-            </button>
-            <!-- Modal Modifier Discipline-->
-            <div class="modal fade modal-lg" th:id="*{'editedDiscipline'+{discipline.id_discipline}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="edited" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                  <div class="modal-header text-center">
-                    <h1 class="modal-title fs-5 col-12 " id="edited">Modifier discipline</h1>
-                  </div>
-                  <form action="/editdiscipline" method="post">
-                    <div class="modal-body">
-                      <div class="row mb-3">
-                        <label class="col-sm-3 col-form-label">ID discipline</label>
-                        <div class="col-sm-9">
-                          <input type="text" class="form-control-plaintext" name="id_discipline" id="id_discipline" th:value="*{discipline.id_discipline}">
-                        </div>
-                      </div>
-                      <div class="row mb-3">
-                        <label for="selectDiscipline" class="col-sm-3 col-form-label">Nom de la discipline</label>
-                        <div class="col-sm-9">
-                          <input id="selectDiscipline" type="text" class="form-control" name="nameDiscipline" th:value="*{discipline.nom}">
-                        </div>
-                      </div>
-                      <fieldset class="row mb-3">
-                        <legend class="col-sm-5 col-form-label">Présente au Paralympique ?</legend>
-                        <div class="col-sm-7">
-                          <input class="form-check-input" type="checkbox" name="paralympique"  th:value="*{discipline.paralympique}">
-                        </div>
-                      </fieldset>
-                      <!--
-                      <table class="table">
-                        <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">Épreuves</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr id="idEpreuve" th:each="epreuve : ${epreuves}" th:data="*{discipline.id_discipline}">
-                          <th scope="row">[[*{epreuve}]]</th>
-                        </tr>
-                        </tbody>
-                      </table>-->
-
-                      <label for="selectEpreuve">Epreuve</label>
-                      <select name="epreuve" class="form-select" id="selectEpreuve">
-                      </select>
-
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                      <button type="submit" class="btn btn-primary">Valider</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-            <!-- Fin Modal Modifier Discipline -->
-          </td>
-          <td>
-            <a class="btn btn-outline-warning" th:href="@{/disciplineEpreuve/editEpreuve/{id}(id=${discipline.id_discipline})}">
-              Modifier épreuve
-            </a>
-            <!-- Modal Modifier Épreuve-->
-            <div class="modal fade modal-lg" th:id="*{'editedEpreuve'}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="edited" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                  <div class="modal-header text-center">
-                    <h1 class="modal-title fs-5 col-12 " id="edited">Modifier épreuves</h1>
-                  </div>
-                  <form action="/editEpreuve" method="post">
-                    <div class="modal-body">
-                      <table class="table">
-                        <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">Épreuves</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr id="idEpreuve" th:each="epreuve : ${epreuves}" th:data="*{discipline.id_discipline}">
-                          <th scope="row">[[*{epreuve.nom}]]</th>
-                        </tr>
-                        </tbody>
-                      </table>
-                      <div class="row mb-3">
-                        <label class="col-sm-3 col-form-label">Ajout épreuves</label>
-                        <div class="col-sm-9">
-                          <input type="text" class="form-control" name="nameDiscipline" >
-                        </div>
-                      </div>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                      <button type="submit" class="btn btn-primary">Valider</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-            <!-- Fin Modal Modifier Épreuve-->
-          </td>
           <td>
             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"th:attr="data-bs-target='#delete'+*{discipline.id_discipline}">
               Supprimer
@@ -244,116 +135,6 @@
   </div>
 </main>
 <!-- End #main -->
-
-<!-- Modal Créer -->
-<div class="modal fade modal-lg" id="createDisciplineEpreuve" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h1 class="modal-title fs-5 col-12 " id="createLabel">Ajouter une discipline</h1>
-      </div>
-        <div class="modal-body">
-          <form id="formDiscipline" action="/add" method="post">
-            <div class="row mb-3">
-              <label for="nomDiscipline" class="col-sm-3 col-form-label">Nom de la discipline</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" id="nomDiscipline" name="nameDiscipline" value="">
-              </div>
-            </div>
-            <fieldset class="row mb-3">
-              <legend class="col-form-label col-sm-4 pt-0">Présente au Paralympique ?</legend>
-              <div class="col-sm-10">
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="oui" checked>
-                  <label class="form-check-label" for="gridRadios1">
-                    Oui
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="non">
-                  <label class="form-check-label" for="gridRadios2">
-                    Non
-                  </label>
-                </div>
-              </div>
-            </fieldset>
-            <button id="createDiscipline" type="submit" class="btn btn-success"> Valider</button>
-          </form>
-          <form id="formEpreuve" action="/addEpreuve" method="post" >
-            <div class="row mb-3">
-              <label for="nomEpreuve" class="col-sm-3 col-form-label">Nom de l'épreuve</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" id="nomEpreuve" name="nameEpreuve">
-              </div>
-            </div>
-            <button type="submit" class="btn btn-success"> Valider</button>
-            <ul id="epreuveList" class="list-group" th:each="epreuve : ${epreuves}">
-              <li class="list-group-item">[[*{epreuve.nom}]]</li>
-            </ul>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-          <button type="button" class="btn btn-success" hidden="hidden">Valider</button>
-        </div>
-    </div>
-  </div>
-</div>
-<!-- Fin Modal Créer -->
-
-<!-- JS Script -->
-<script>
-  // Modal creer
-  const myModalCreate = document.getElementById('createDisciplineEpreuve');
-  const myButtonDiscipline = document.getElementById('createDiscipline');
-  const InputNomDis = document.getElementById('nomDiscipline');
-  const formDis = document.getElementById('formDiscipline');
-  const formEpr = document.getElementById('formEpreuve');
-  const Epr = document.getElementById('epreuveList');
-
-  let discipline = "";
-  myModalCreate.addEventListener('shown.bs.modal', async ()=> {
-    formEpr.hidden=true;
-    myButtonDiscipline.hidden=false;
-    discipline=InputNomDis.value;
-  })
-  myButtonDiscipline.addEventListener('click', async ()=> {
-    myButtonDiscipline.hidden=true;
-    InputNomDis.readOnly=true;
-    formEpr.hidden=false;
-    /*
-    Epr.innerHTML = "<p>en attente </p>";
-    let response = await fetch('createEpreuve/')
-            .then((res) => {
-              return res.json()
-            })
-    response.epreuves.forEach((ep) => {
-      Epr.innerHTML += "<p>" + ep + "</p>";
-    })*/
-
-  })
-
-
-  const myModal = document.getElementById('editedDiscipline1');
-  const selDis = document.getElementById("selectDiscipline");
-  const selEp = document.getElementById("selectEpreuve");
-
-  let dis = "";
-  myModal.addEventListener('shown.bs.modal', async ()=> {
-    if(!dis){
-      selEp.innerHTML = "<option value='' disabled selected hidden>Choisissez une épreuve</option>";
-      dis = selDis.value;
-      let response = await fetch('/createEpreuve/'+ dis)
-              .then((res) => {
-                return res.json()
-              })
-      response.epreuves.forEach((ep) => {
-        selEp.innerHTML += "<p>" + ep + "</p>";
-      })
-    }
-  })
-
-  </script>
 
 <!-- Vendor JS Files -->
 <script src="assets/vendor/aos/aos.js"></script>

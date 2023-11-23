@@ -52,8 +52,9 @@ public class DisciplineImpl implements DisciplineService{
         if (Objects.nonNull(discipline.getNom()) && !"".equalsIgnoreCase(nom)) {
             discipline.setNom(nom);
         }
-
-        discipline.setParalympique(paralympique);
+        if (Objects.nonNull(discipline.getParalympique()) && !"".equalsIgnoreCase(paralympique.toString())) {
+            discipline.setParalympique(paralympique);
+        }
 
         return disciplineRepository.save(discipline);
     }
@@ -76,6 +77,7 @@ public class DisciplineImpl implements DisciplineService{
         return disciplineRepository.findDisciplineByNom(nom);
     }
 
+    @Override
     public List<String> getAllNames() {
         return disciplineRepository.findAll().stream()
                 .map(Discipline::getNom).toList();
