@@ -7,4 +7,5 @@ import java.util.List;
 public interface DisciplineService {
 
     List<String> getAllNames();
+    List<Discipline> getAll();
 }
