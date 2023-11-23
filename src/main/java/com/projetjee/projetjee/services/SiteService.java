@@ -18,10 +18,17 @@ public interface SiteService {
     // Save Site
     Site saveSite(String nom, String ville, Categorie categorie);
 
-    //
+    // Récupérer tout les sites
     List<Site> findAll();
     // Update Site
     Site updateSite(Long id_site, String nom, String ville, Categorie categorie);
     // Delete Discipline
     void deleteSiteById(Long id_site);
+
+    // Catégories
+    List<String> getCategories();
+
+    Categorie getByNom(String nom);
+
+
 }
