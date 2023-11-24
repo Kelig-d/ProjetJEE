@@ -38,10 +38,6 @@ public class Epreuve {
         this.nom = nom;
     }
 
-    public interface Nom{
-        String getNom();
-    }
-
     public Discipline getDiscipline(){ return discipline;}
 
     public void setDiscipline(Discipline discipline) {
@@ -50,5 +46,12 @@ public class Epreuve {
 
     public interface Nom{
         String getNom();
+    }
+
+    public interface EpreuveMinimized{
+        Long getId_epreuve();
+        String getNom();
+
+        Discipline.DisciplineMinimized getDiscipline();
     }
 }

@@ -29,4 +29,6 @@ public interface DisciplineRepository extends JpaRepository<Discipline, Long>, J
             "WHERE id_discipline = :id",nativeQuery = true)
     Discipline getDisciplineById(@Param("id") Long id_discipline);
 
+
+
 }

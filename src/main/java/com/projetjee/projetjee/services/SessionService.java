@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface SessionService {
     List<Session.dates> getDatesBySite(String site);
-    List<Session> getAll();
+    List<Session.infiniteFix> getAll();
 
     String getCode(String discipline);
 

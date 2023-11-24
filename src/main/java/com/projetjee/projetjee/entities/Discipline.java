@@ -53,4 +53,10 @@ public class Discipline {
     public String toString() {
         return "Discipline [id=" + id_discipline + ", name=" + nom + ", flags=" + paralympique + "]";
     }
+
+    public interface DisciplineMinimized{
+        Long getId_discipline();
+        String getNom();
+        Boolean getParalympique();
+    }
 }

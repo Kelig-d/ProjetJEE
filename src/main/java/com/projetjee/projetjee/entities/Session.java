@@ -39,7 +39,7 @@ public class Session implements Persistable<Long> {
 
     @ManyToOne
     @JoinColumn(name="type_session", referencedColumnName = "nom")
-    private TypeSession type_session;
+    private TypeSession typeSession;
 
     @Transient
 
@@ -73,5 +73,15 @@ public class Session implements Persistable<Long> {
 
     public interface Code {
         String getCode();
+    }
+
+    public interface infiniteFix {
+        String getCode();
+        LocalDateTime getDateDebut();
+        LocalDateTime getDateFin();
+        String getDescription();
+        TypeSession getTypeSession();
+        Site getSite();
+        Epreuve.EpreuveMinimized getEpreuve();
     }
 }

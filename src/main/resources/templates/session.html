@@ -37,14 +37,19 @@
 <header id="header" class="fixed-top ">
     <div class="container d-flex align-items-center">
 
-        <h1 class="logo me-auto"><a href="index.html">Jogenda</a></h1>
+        <h1 class="logo me-auto"><a href="/index">Jogenda</a></h1>
 
         <nav id="navbar" class="navbar">
             <ul>
                 <li><a class="nav-link scrollto" href="/">Home</a></li>
                 <li><a class="nav-link scrollto" href="/site">Sites</a></li>
-                <li><a class="nav-link scrollto" href="/discipline">Disciplines</a></li>
-                <li><a class="nav-link scrollto active" href="/session">Sessions</a></li>
+                <li class="dropdown"><a href="#"><span>Discipline et Epreuve</span> <i class="bi bi-chevron-down"></i></a>
+                    <ul>
+                        <li><a href="/discipline">Discipline</a></li>
+                        <li><a href="/epreuve">Epreuve</a></li>
+                        <li><a href="/disciplineEpreuve">Discipline et Epreuve</a></li>
+                    </ul>
+                </li>                <li><a class="nav-link scrollto active" href="/session">Sessions</a></li>
                 <li><a class="getstarted scrollto" href="/logout">Déconnexion</a></li>
             </ul>
             <i class="bi bi-list mobile-nav-toggle"></i>

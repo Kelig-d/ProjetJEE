@@ -20,8 +20,8 @@ public class SessionImpl implements SessionService {
     }
 
     @Override
-    public List<Session> getAll(){
-        return sessionRepository.findAll();
+    public List<Session.infiniteFix> getAll(){
+        return sessionRepository.findAllProjectedBy();
     }
 
     @Override
