@@ -15,16 +15,10 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public class DisciplineImpl implements DisciplineService{
+public class DisciplineCMF implements DisciplineService{
 
     @Autowired
     private DisciplineRepository disciplineRepository;
-
-    @Override
-    public List<String> getAllNames() {
-        return disciplineRepository.findAll().stream()
-                .map(Discipline::getNom).toList();
-    }
 
     // Save Discipline
     @Override
@@ -62,18 +56,7 @@ public class DisciplineImpl implements DisciplineService{
     @Override
     public void deleteDisciplineById(Long id_discipline)
     {
-
         disciplineRepository.deleteById(id_discipline);
-    }
-
-    @Override
-    public List<Discipline> getAll() {
-        return disciplineRepository.findAll();
-    }
-
-    @Override
-    public Discipline findDisciplineByNom(String nom){
-        return disciplineRepository.findDisciplineByNom(nom);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.projetjee.projetjee.repository;
 
+import com.projetjee.projetjee.entities.Discipline;
 import com.projetjee.projetjee.entities.Epreuve;
 import com.projetjee.projetjee.entities.Session;
 import com.projetjee.projetjee.entities.Site;
@@ -14,4 +15,5 @@ public interface SessionRepository extends JpaRepository<Session, Long> {
 
     @Transactional
     void deleteByCode(String code);
+    Session getFirstByEpreuve(Epreuve epreuve);
 }

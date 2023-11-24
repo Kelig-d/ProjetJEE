@@ -83,70 +83,23 @@
 <main id="main">
   <div class="container">
     <div class="title">
-      <h1>Disciplines Olympiques</h1>
-      <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#createDiscipline">
-        Nouvelle discipline
-      </button>
+      <h1>Disciplines et épreuves Olympiques</h1>
     </div>
     <div>
       <table class="table">
         <thead>
         <tr>
           <th scope="col">Discipline</th>
+          <th scope="col">Épreuves</th>
           <th scope="col">Paralympique</th>
-          <th scope="col">Modifier</th>
           <th scope="col">Supprimer</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="discipline : ${disciplines}">
-          <td>[[*{discipline.nom}]]</td>
+          <td> [[*{discipline.nom}]] </td>
+          <td> [[*{discipline.name_epreuve}]] </td>
           <td>[[*{discipline.paralympique}]]</td>
-          <td>
-            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" th:attr="data-bs-target='#editedDiscipline'+*{discipline.id_discipline}" >
-              Modifier
-            </button>
-            <!-- Modal Modifier Discipline-->
-            <div class="modal fade modal-lg" th:id="*{'editedDiscipline'+{discipline.id_discipline}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="edited" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                  <div class="modal-header text-center">
-                    <h1 class="modal-title fs-5 col-12 " id="edited">Modifier discipline</h1>
-                  </div>
-                  <form action="/discipline/editdiscipline" method="post">
-                    <div class="modal-body">
-                      <div class="row mb-3">
-                        <label class="col-sm-3 col-form-label">ID discipline</label>
-                        <div class="col-sm-9">
-                          <input type="text" class="form-control-plaintext" name="id_discipline" id="id_discipline" th:value="*{discipline.id_discipline}" readonly="readonly">
-                        </div>
-                      </div>
-                      <div class="row mb-3">
-                        <label for="selectDiscipline" class="col-sm-3 col-form-label">Nom de la discipline</label>
-                        <div class="col-sm-9">
-                          <input id="selectDiscipline" type="text" class="form-control" name="nameDiscipline" th:value="*{discipline.nom}">
-                        </div>
-                      </div>
-                      <fieldset class="row mb-3">
-                        <legend class="col-sm-5 col-form-label">Présente au Paralympique ?</legend>
-                        <div class="col-sm-7">
-                          <select class="form-select" id="selPara" name="paralympique">
-                            <option id="opt1" th:value="*{discipline.paralympique}"  th:label="*{discipline.paralympique}"></option>
-                            <option id="opt2" value="" label=""></option>
-                          </select>
-                        </div>
-                      </fieldset>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                      <button type="submit" class="btn btn-primary">Valider</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-            <!-- Fin Modal Modifier Discipline -->
-          </td>
           <td>
             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"th:attr="data-bs-target='#delete'+*{discipline.id_discipline}">
               Supprimer
@@ -165,7 +118,7 @@
                   </div>
                   <div class="modal-footer-delete">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                    <a th:href="@{/discipline/delete/{id}(id=${discipline.id_discipline})}"
+                    <a th:href="@{/delete/{id}(id=${discipline.id_discipline})}"
                        class="btn btn-danger">Supprimer</a>
                   </div>
                 </div>
@@ -179,7 +132,7 @@
     </div>
     <nav aria-label="Page navigation example">
       <div class = "col-sm-2">
-        Total discipline: [[${totalItems}]]
+        Total discipline avec épreuves: [[${totalItems}]]
       </div>
       <ul class="pagination justify-content-center">
         <li class="page-item" th:each="i: ${#numbers.sequence(1, totalPages)}">
@@ -196,85 +149,6 @@
   </div>
 </main>
 <!-- End #main -->
-
-<!-- Modal Créer -->
-<div class="modal fade modal-lg" id="createDiscipline" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h1 class="modal-title fs-5 col-12 " id="createLabel">Ajouter une discipline</h1>
-      </div>
-      <form id="formDiscipline" action="/discipline/addDiscipline" method="post">
-        <div class="modal-body">
-            <div class="row mb-3">
-              <label for="nomDiscipline" class="col-sm-3 col-form-label">Nom de la discipline</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" id="nomDiscipline" name="nameDiscipline" onblur="getVal()" >
-              </div>
-            </div>
-          <fieldset class="row mb-3">
-            <legend class="col-sm-5 col-form-label">Présente au Paralympique ?</legend>
-            <div class="col-sm-7">
-              <select class="form-select" th:name="paralympique" id="optionPara" onblur="getVal()">
-                <option value="">Choisissez votre réponse</option>
-                <option value="true">oui</option>
-                <option value="false">non</option>
-              </select>
-            </div>
-          </fieldset>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-          <button type="submit" class="btn btn-success" id="BtnCreate" hidden="true">Valider</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-<!-- Fin Modal Créer -->
-
-<script>
-  const ModalCreate = document.getElementById('createDiscipline');
-  const BtnCreate = document.getElementById("BtnCreate");
-  function getVal() {
-    const para = document.getElementById("optionPara").value;
-    const disc = document.getElementById("nomDiscipline").value;
-    if(disc==="" || para==="") {
-      BtnCreate.hidden = true;
-    }else{
-      BtnCreate.hidden=false;
-    }
-  }
-
-  selectEdit();
-
-  function selectEdit(){
-     opt1 = document.getElementById("opt1");
-     opt2 = document.getElementById("opt2");
-     opt1value = document.getElementById("opt1").value;
-     while(opt1!=null){
-       if(opt1value==="true"){
-         opt2.value="false";
-         opt2.label="non";
-         opt1.label="oui";
-       }else{
-         opt2.value="true";
-         opt2.label="oui";
-         opt1.label="non";
-       }
-       opt1.id="opt1done";
-       opt2.id="opt2done";
-       opt1value.id="opt1valuedone";
-       opt1 = document.getElementById("opt1");
-       opt2 = document.getElementById("opt2");
-       opt1value = document.getElementById("opt1").value;
-     }
-  }
-  ModalCreate.addEventListener('shown.bs.modal', async ()=> {
-    getVal();
-  })
-
-</script>
 
 <!-- Vendor JS Files -->
 <script src="/assets/vendor/aos/aos.js"></script>
