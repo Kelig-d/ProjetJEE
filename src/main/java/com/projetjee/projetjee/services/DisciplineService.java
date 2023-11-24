@@ -15,8 +15,6 @@ public interface DisciplineService {
     //Read Discipline
     List<Discipline> findAll();
 
-    // Read Discipline with epreuve
-    List<Discipline> findAllEpreuveDiscipline();
 
     // Update Discipline
     Discipline updateDiscipline(Long id_discipline ,String nom ,Boolean paralympique);
@@ -24,7 +22,6 @@ public interface DisciplineService {
     // Delete Discipline
     void deleteDisciplineById(Long id_discipline);
 
-    Discipline findDisciplineByNom(String nom);
 
     List<String> getAllNames();
 

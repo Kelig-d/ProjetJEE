@@ -78,8 +78,8 @@ public class SessionController {
         if (session.get("dateFin") == null) {
             List<String> bannedHours = new ArrayList<>();
             List<String> heureDebuts = new ArrayList<>();
-            List<Session> sessions = sessionService.getAll();
-            for (Session s : sessions) {
+            List<Session.infiniteFix> sessions = sessionService.getAll();
+            for (Session.infiniteFix s : sessions) {
                 if (!(Timestamp.valueOf(s.getDateFin()).getTime() < (long) (session.get("dateDebut")) || Timestamp.valueOf(s.getDateDebut()).getTime() > (long) (session.get("dateDebut")) + 82800000)) {
                     LinkedHashMap<String, String> hm = (LinkedHashMap<String, String>) (session.get("site"));
                     String siteName =  hm.get("nom");
@@ -104,9 +104,9 @@ public class SessionController {
             response.put("heureDebuts", heureDebuts);
         } else {
             List<String> HeureFins = new ArrayList<>();
-            List<Session> sessions = sessionService.getAll();
+            List<Session.infiniteFix> sessions = sessionService.getAll();
             int limit = 24;
-            for (Session s : sessions) {
+            for (Session.infiniteFix s : sessions) {
                 LocalDateTime selDate = new Timestamp((long)session.get("dateDebut")).toLocalDateTime();
                 if(s.getDateDebut().getDayOfMonth() == selDate.getDayOfMonth() && s.getDateDebut().getMonthValue() == selDate.getMonthValue() && s.getDateDebut().getYear() == selDate.getYear() && s.getDateDebut().getHour() > selDate.getHour()){
                     if(Objects.equals(s.getSite().getNom(), ((LinkedHashMap<String, String>) (session.get("site"))).get("nom"))){
@@ -154,7 +154,7 @@ public class SessionController {
             s.setDateDebut(dateDebut.toLocalDateTime());
             s.setDateFin(dateFin.toLocalDateTime());
             s.setDescription(session.getFirst("desc"));
-            s.setType_session(new TypeSession(session.getFirst("typeSession")));
+            s.setTypeSession(new TypeSession(session.getFirst("typeSession")));
             if (session.getFirst("code") != null && session.getFirst("code") != "") {
                 s.setCode(session.getFirst("code"));
                 s.setIsNew(false);
@@ -174,6 +174,7 @@ public class SessionController {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         JSONObject response = new JSONObject();
+        var debug = sessionService.getAll();
         response.put("sessions", mapper.writeValueAsString(sessionService.getAll()));
         return ResponseEntity.ok(response);
     }

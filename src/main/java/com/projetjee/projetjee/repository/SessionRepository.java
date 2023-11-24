@@ -16,4 +16,6 @@ public interface SessionRepository extends JpaRepository<Session, Long> {
     @Transactional
     void deleteByCode(String code);
     Session getFirstByEpreuve(Epreuve epreuve);
+
+    List<Session.infiniteFix> findAllProjectedBy();
 }

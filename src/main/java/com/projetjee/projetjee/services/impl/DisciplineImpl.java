@@ -1,4 +1,4 @@
-package com.projetjee.projetjee.services.cmf;
+package com.projetjee.projetjee.services.impl;
 
 import com.projetjee.projetjee.entities.Discipline;
 import com.projetjee.projetjee.entities.Epreuve;
@@ -19,13 +19,6 @@ public class DisciplineImpl implements DisciplineService{
 
     @Autowired
     private DisciplineRepository disciplineRepository;
-
-    @Override
-    public List<String> getAllNames() {
-        return disciplineRepository.findAll().stream()
-                .map(Discipline::getNom).toList();
-    }
-
     // Save Discipline
     @Override
     public Discipline saveDiscipline(String nom, Boolean paralympique)
@@ -41,6 +34,7 @@ public class DisciplineImpl implements DisciplineService{
     public List<Discipline> findAll(){
         return (List<Discipline>)disciplineRepository.findAll();
     }
+
 
     // Update Discipline
     @Override
@@ -69,11 +63,6 @@ public class DisciplineImpl implements DisciplineService{
     @Override
     public List<Discipline> getAll() {
         return disciplineRepository.findAll();
-    }
-
-    @Override
-    public Discipline findDisciplineByNom(String nom){
-        return disciplineRepository.findDisciplineByNom(nom);
     }
 
     @Override

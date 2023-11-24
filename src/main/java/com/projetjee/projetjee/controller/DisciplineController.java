@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.projetjee.projetjee.services.securityUtils.verifToken;
+
 
 @Controller
 public class DisciplineController {
@@ -22,8 +24,16 @@ public class DisciplineController {
 
     // Read all discipline
     @GetMapping("/discipline")
-    public String showDisciplineList(Model model) {
-        return findPaginated(1,  model);
+    public String showDisciplineList(@CookieValue(value="JWebToken", required=false) String bearerToken, Model model) {
+        if (bearerToken != null) {
+            if (verifToken(bearerToken, "administratif")){
+
+                return findPaginated(1,  model);
+            }
+            else return "index";
+        }
+        return "login";
+
     }
 
     @GetMapping("/discipline/{pageNb}")

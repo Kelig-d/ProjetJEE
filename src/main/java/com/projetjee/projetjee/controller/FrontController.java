@@ -37,18 +37,6 @@ public class FrontController {
         return "login";
     }
 
-    @GetMapping("/discipline")
-    public String disciplinePage(@CookieValue(value="JWebToken", required=false)String bearerToken){
-        if (bearerToken != null) {
-            if (verifToken(bearerToken, "administratif")){
-
-                return "discipline";
-            }
-            else return "/index";
-        }
-        return "login";
-    }
-
     @GetMapping("/session")
     public String sessionPage(@CookieValue(value="JWebToken", required=false) String bearerToken){
         if (bearerToken != null) {

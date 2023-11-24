@@ -279,7 +279,7 @@ async function loadSession(){
                     "      <td>" + dateDeb + "</td>\n" +
                     "      <td>" + dateFin + "</td>\n" +
                     "      <td>" + entry.description + "</td>\n" +
-                    "      <td>" + entry.type_session.nom + "</td>\n" +
+                    "      <td>" + entry.typeSession.nom + "</td>\n" +
                     "      <td><button value=" + entry.code + " type=\"button\" class=\"btn btn-primary updateBut\">Modifier</button><button class='btn btn-danger deleteSession mx-2' value=" + entry.code + ">Supprimer</button></td>\n" +
                     "    </tr>"
 
@@ -370,7 +370,7 @@ async function prepareUpdate(entry){
     }
 
     await setTypeFormPart();
-    typeSess.value = entry.type_session.nom;
+    typeSess.value = entry.typeSession.nom;
     document.getElementById("sessionDescription").value = entry.description;
 
 

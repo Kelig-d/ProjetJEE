@@ -18,8 +18,6 @@ public interface EpreuveRepository extends JpaRepository<Epreuve, Long> ,JpaSpec
             "WHERE id_discipline = :id",nativeQuery = true)
     List<Epreuve> findAllEpreuveByIdDiscipline(@Param("id") Long id_discipline);
 
-    List<Epreuve.Nom> findAllByDiscipline_Nom(String discipline);
-
     @Query(value="SELECT distinct * "+
             "FROM epreuve "+
             "WHERE id_epreuve = :id",nativeQuery = true)

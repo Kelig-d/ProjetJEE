@@ -8,7 +8,6 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 public interface EpreuveService {
-    List<String> getByDiscipline(String discipline);
 
     Epreuve getByDisciplineAndNom(String discipline, String nom);
     // Read Discipline with epreuve
