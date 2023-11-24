@@ -24,10 +24,10 @@ public interface EpreuveRepository extends JpaRepository<Epreuve, Long> ,JpaSpec
             "FROM epreuve "+
             "WHERE id_epreuve = :id",nativeQuery = true)
     List<Epreuve> findEpreuveById_epreuve(@Param("id") Long id_epreuve);
-
     List<Epreuve> getEpreuveByDiscipline(Discipline discipline);
 
     List<Epreuve.Nom> findAllByDiscipline_Nom(String discipline);
 
     Epreuve findFirstByDiscipline_NomAndNom(String discipline, String nom);
 }
+
