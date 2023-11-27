@@ -20,6 +20,7 @@ public class Discipline {
     private Boolean paralympique;
 
     @Column(name = "name_epreuve",insertable = false,updatable = false)
+    @Transient
     private String name_epreuve;
 
     @OneToMany(mappedBy = "discipline", cascade = CascadeType.ALL, orphanRemoval = true)

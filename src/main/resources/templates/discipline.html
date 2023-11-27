@@ -48,7 +48,7 @@
           <ul>
             <li><a href="/discipline">Discipline</a></li>
             <li><a href="/epreuve">Epreuve</a></li>
-            <li><a href="/disciplineEpreuve">Discipline et Epreuve</a></li>
+<!--            <li><a href="/disciplineEpreuve">Discipline et Epreuve</a></li>-->
           </ul>
         </li>        <li><a class="nav-link scrollto" href="/session">Sessions</a></li>
         <li><a class="getstarted scrollto" href="/logout">Déconnexion</a></li>
@@ -178,7 +178,7 @@
           <a class="page-link" th:if="${currentPage != i}" th:href="@{'/epreuve/' + ${i}}">[[${i}]]</a>
         </li>
         <li class="page-item">
-          <a class="page-link" th:if="${currentPage < totalPages}" th:href="@{'/epreuve/' + ${currentPage + 1}}">Suivant</a>
+          <a class="page-link" th:if="${currentPage < totalPages}" th:href="@{'/discipline/' + ${currentPage + 1}}">Suivant</a>
         </li>
         <li class="page-item">
           <a class="page-link" th:if="${currentPage < totalPages}" th:href="@{'/epreuve/' + ${totalPages}}">Dernier</a>
