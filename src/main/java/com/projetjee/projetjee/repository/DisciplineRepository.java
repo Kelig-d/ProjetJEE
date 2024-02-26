@@ -15,7 +15,7 @@ import java.util.List;
 public interface DisciplineRepository extends JpaRepository<Discipline, Long>, JpaSpecificationExecutor<Discipline>
 {
     @Query(value=" SELECT discipline.id_discipline,discipline.nom, discipline.paralympique,"+
-            "GROUP_CONCAT(DISTINCT epreuve.nom ORDER BY epreuve.nom SEPARATOR  ', ' )AS 'name_epreuve' "+
+            "GROUP_CONCAT(DISTINCT epreuve.nom ORDER BY epreuve.nom SEPARATOR  ', ' ) AS 'name_epreuve' "+
             "FROM discipline,epreuve "+
             "WHERE discipline.id_discipline=epreuve.id_discipline "+
             "GROUP BY discipline.id_discipline",
